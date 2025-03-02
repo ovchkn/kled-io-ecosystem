@@ -3,13 +3,13 @@
  */
 
 var config = {
-  title: "Kled.io Ecosystem Documentation",
-  tagline: "Comprehensive Platform for Enterprise AI/ML Deployment and Development Environment Management",
-  url: "https://kled.io",
-  baseUrl: "/docs/",
-  favicon: "/media/kled-favicon.png",
-  organizationName: "kled-io",
-  projectName: "kled-ecosystem-docs",
+  title: 'Kled Ecosystem',
+  tagline: 'Development tools for Kubernetes',
+  url: 'https://kled.io',
+  baseUrl: '/',
+  favicon: 'img/favicon.ico',
+  organizationName: 'kled-io',
+  projectName: 'kled-ecosystem-docs',
 
   // Basic configuration
   onBrokenLinks: 'throw',
@@ -22,24 +22,70 @@ var config = {
   // Theme configuration
   themeConfig: {
     navbar: {
-      title: "Kled.io Ecosystem",
+      title: 'Kled Ecosystem',
+      logo: {
+        alt: 'Kled Logo',
+        src: 'img/logo.svg',
+      },
       items: [
         {
-          href: "https://kled.io/",
-          label: "Website",
-          position: "right"
+          to: 'docs/getting-started/introduction',
+          activeBasePath: 'docs',
+          label: 'Docs',
+          position: 'left',
         },
         {
-          href: "https://github.com/kled-io",
-          label: "GitHub",
-          position: "right"
-        }
-      ]
+          href: 'https://github.com/kled-io/kled-ecosystem',
+          label: 'GitHub',
+          position: 'right',
+        },
+      ],
     },
     footer: {
-      style: "light",
-      copyright: "Copyright © " + new Date().getFullYear() + " Kled.io. All rights reserved."
-    }
+      style: 'dark',
+      links: [
+        {
+          title: 'Docs',
+          items: [
+            {
+              label: 'Getting Started',
+              to: 'docs/getting-started/introduction',
+            },
+            {
+              label: 'Architecture',
+              to: 'docs/architecture/kled-cluster',
+            },
+          ],
+        },
+        {
+          title: 'Community',
+          items: [
+            {
+              label: 'Stack Overflow',
+              href: 'https://stackoverflow.com/questions/tagged/kled',
+            },
+            {
+              label: 'Discord',
+              href: 'https://discord.gg/kled-io',
+            },
+            {
+              label: 'Twitter',
+              href: 'https://twitter.com/kled_io',
+            },
+          ],
+        },
+        {
+          title: 'More',
+          items: [
+            {
+              label: 'GitHub',
+              href: 'https://github.com/kled-io/kled-ecosystem',
+            },
+          ],
+        },
+      ],
+      copyright: `Copyright © ${new Date().getFullYear()} Kled.io. Built with Docusaurus.`,
+    },
   },
 
   // Presets
@@ -61,15 +107,22 @@ var config = {
   // Plugins
   plugins: [
     [
-      '@docusaurus/theme-mermaid',
+      '@docusaurus/plugin-content-docs',
+      {
+        sidebarPath: require.resolve('./sidebars.js'),
+        editUrl: 'https://github.com/kled-io/kled-ecosystem-docs/edit/main/',
+      }
     ],
+    '@docusaurus/plugin-content-pages',
+    '@docusaurus/plugin-sitemap',
   ],
 
   // Themes
   themes: [
-    [
-      '@saucelabs/theme-github-codeblock',
-    ],
+    ['@docusaurus/theme-classic', {
+      customCss: require.resolve('./src/css/custom.css'),
+    }],
+    '@docusaurus/theme-search-algolia',
   ],
 };
 
