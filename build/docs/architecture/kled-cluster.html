@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kled Cluster - Kled.io Ecosystem Documentation</title>
+    <link rel="stylesheet" href="/css/custom.css">
+    <style>
+        :root {
+            --primary-color: #0066cc;
+            --secondary-color: #4CAF50;
+            --accent-color: #FF5722;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --border-color: #ddd;
+            --sidebar-width: 280px;
+            --header-height: 60px;
+            --content-max-width: 1200px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0 20px;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .main-container {
+            display: flex;
+            margin-top: var(--header-height);
+            flex: 1;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--light-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            position: fixed;
+            top: var(--header-height);
+            bottom: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: var(--text-color);
+            display: block;
+            padding: 5px 0;
+            transition: color 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: var(--primary-color);
+        }
+
+        .content {
+            flex: 1;
+            padding: 30px;
+            margin-left: var(--sidebar-width);
+            max-width: calc(var(--content-max-width) - var(--sidebar-width));
+        }
+
+        .content h1 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .content p {
+            margin-bottom: 15px;
+        }
+
+        .content ul, .content ol {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+
+        .content a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .content a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: var(--light-bg);
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .content {
+                margin-left: 0;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kled.io Ecosystem Documentation</h1>
+    </header>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <h2>Documentation</h2>
+            <ul>
+                <li><a href="/docs/overview/index.html">Overview</a></li>
+                <li>
+                    <h3>Architecture</h3>
+                    <ul>
+                        <li><a href="/docs/architecture/index.html">Architecture Overview</a></li>
+                        <li><a href="/docs/architecture/workspace-technology.html">Workspace Technology</a></li>
+                        <li><a href="/docs/architecture/kled-cluster.html">Kled Cluster</a></li>
+                        <li><a href="/docs/architecture/pure-rust-communication.html">Pure Rust Communication</a></li>
+                        <li><a href="/docs/architecture/flutter-ui.html">Flutter UI</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <h3>Technical Components</h3>
+                    <ul>
+                        <li><a href="/docs/technical-components/index.html">Components Overview</a></li>
+                        <li><a href="/docs/technical-components/cli.html">CLI</a></li>
+                        <li><a href="/docs/technical-components/gateway.html">Gateway</a></li>
+                        <li><a href="/docs/technical-components/kledspace.html">Kledspace</a></li>
+                        <li><a href="/docs/technical-components/kpolicy.html">kPolicy</a></li>
+                        <li><a href="/docs/technical-components/kled-cluster-integration.html">Kled Cluster Integration</a></li>
+                        <li><a href="/docs/technical-components/virtual-cluster-integration.html">Virtual Cluster Integration</a></li>
+                        <li><a href="/docs/technical-components/rust-flutter-bridge.html">Rust-Flutter Bridge</a></li>
+                    </ul>
+                </li>
+                <li><a href="/docs/enterprise-ai-ml/index.html">Enterprise AI/ML</a></li>
+                <li><a href="/docs/roadmap/index.html">Roadmap</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+<p></p>
+Kled Cluster is a revolutionary technology that creates fully functional virtual Kubernetes clusters that run inside regular namespaces of a host Kubernetes cluster. Unlike regular namespaces, Kled Clusters are fully isolated environments with their own control plane, allowing teams to use them just like regular clusters while leveraging the underlying host cluster for efficiency.
+<p></p>
+<h2>Overview</h2>
+<p></p>
+<pre><code class="language-mermaid">
+graph TD
+    A[Host Kubernetes Cluster] --> B[Kled Cluster 1]
+    A --> C[Kled Cluster 2]
+    A --> D[Kled Cluster N]
+<p></p>
+    B --> E[Kled Cluster Control Plane]
+    B --> F[Synced Resources]
+<p></p>
+    E --> G[API Server]
+    E --> H[Controller Manager]
+    E --> I[Scheduler]
+<p></p>
+    F --> J[Pods]
+    F --> K[Services]
+    F --> L[ConfigMaps]
+    F --> M[Secrets]
+<p></p>
+    subgraph "Host Cluster"
+    A
+    end
+<p></p>
+    subgraph "Kled Clusters"
+    B
+    C
+    D
+    end
+<p></p>
+    subgraph "Kled Cluster Components"
+    E
+    F
+    G
+    H
+    I
+    J
+    K
+    L
+    M
+    end
+</code></pre>
+<p></p>
+Kled Clusters provide a powerful solution for multi-tenancy in Kubernetes, enabling teams to work in isolated environments while efficiently sharing the underlying infrastructure. This architecture allows enterprises to maximize resource utilization while maintaining strong isolation between different teams and workloads.
+<p></p>
+<h2>Key Features</h2>
+<p></p>
+<h3>Isolated Control Plane</h3>
+<p></p>
+Each Kled Cluster has its own isolated control plane, providing a dedicated environment for managing Kubernetes resources:
+<p></p>
+<ul>
+<li>**API Server**: Each Kled Cluster has its own API server, allowing users to interact with the cluster using standard Kubernetes tools.</li>
+<ul>
+<li>**Controller Manager**: The controller manager ensures that the desired state of resources is maintained within the Kled Cluster.</li>
+<ul>
+<li>**Scheduler**: The scheduler places pods on available nodes within the Kled Cluster, optimizing resource utilization.</li>
+<p></p>
+This isolated control plane provides several key benefits:
+<p></p>
+<ul>
+<li>**Administrative Isolation**: Users can have admin access to their Kled Cluster without having admin access to the host cluster.</li>
+<ul>
+<li>**API Isolation**: API requests are processed by the Kled Cluster's API server, preventing unauthorized access to the host cluster.</li>
+<ul>
+<li>**Resource Isolation**: Resources created in a Kled Cluster are isolated from other Kled Clusters, preventing conflicts and ensuring security.</li>
+<p></p>
+<h3>Resource Synchronization</h3>
+<p></p>
+Kled Clusters synchronize resources between the virtual cluster and the host cluster, ensuring that resources created in the Kled Cluster are properly represented in the host cluster:
+<p></p>
+<pre><code class="language-yaml">
+Example synchronization configuration
+sync:
+  # Resources to synchronize
+  resources:
+    # Pods
+    - name: pods
+      # Synchronization mode
+      mode: bidirectional
+      # Namespace mapping
+      namespaceMapping:
+        # Map virtual cluster namespaces to host cluster namespaces
+        default: kled-cluster-1-default
+        kube-system: kled-cluster-1-kube-system
+<p></p>
+    # Services
+    - name: services
+      mode: bidirectional
+      namespaceMapping:
+        default: kled-cluster-1-default
+        kube-system: kled-cluster-1-kube-system
+<p></p>
+    # ConfigMaps
+    - name: configmaps
+      mode: bidirectional
+      namespaceMapping:
+        default: kled-cluster-1-default
+        kube-system: kled-cluster-1-kube-system
+<p></p>
+    # Secrets
+    - name: secrets
+      mode: bidirectional
+      namespaceMapping:
+        default: kled-cluster-1-default
+        kube-system: kled-cluster-1-kube-system
+</code></pre>
+<p></p>
+This synchronization provides several key benefits:
+<p></p>
+<ul>
+<li>**Transparent Resource Management**: Resources created in the Kled Cluster are automatically synchronized to the host cluster, ensuring that they are properly managed.</li>
+<ul>
+<li>**Efficient Resource Utilization**: Resources are shared between Kled Clusters, maximizing resource utilization and reducing overhead.</li>
+<ul>
+<li>**Simplified Management**: Administrators can manage resources at the host cluster level while still providing isolated environments for users.</li>
+<p></p>
+<h3>Multi-Tenancy</h3>
+<p></p>
+Kled Clusters provide a powerful solution for multi-tenancy in Kubernetes, enabling multiple teams to share a single host cluster while maintaining isolation:
+<p></p>
+<pre><code class="language-yaml">
+Example multi-tenancy configuration
+apiVersion: kled.io/v1
+kind: KledCluster
+metadata:
+  name: team-a
+spec:
+  # Namespace for the Kled Cluster
+  namespace: team-a
+<p></p>
+  # Resource limits
+  resources:
+    limits:
+      cpu: "4"
+      memory: "8Gi"
+    requests:
+      cpu: "2"
+      memory: "4Gi"
+<p></p>
+  # Network configuration
+  networking:
+    # Network plugin
+    plugin: cilium
+    # Pod CIDR
+    podCIDR: 10.42.0.0/16
+    # Service CIDR
+    serviceCIDR: 10.43.0.0/16
+<p></p>
+  # Storage configuration
+  storage:
+    # Storage class
+    storageClass: standard
+    # Storage capacity
+    capacity: 100Gi
+</code></pre>
+<p></p>
+This multi-tenancy provides several key benefits:
+<p></p>
+<ul>
+<li>**Team Isolation**: Each team can have its own Kled Cluster, providing a dedicated environment for development and deployment.</li>
+<ul>
+<li>**Resource Quotas**: Administrators can set resource quotas for each Kled Cluster, ensuring fair resource allocation.</li>
+<ul>
+<li>**Policy Enforcement**: Policies can be enforced at the Kled Cluster level, ensuring compliance with security and operational requirements.</li>
+<ul>
+<li>**Cost Allocation**: Resource usage can be tracked at the Kled Cluster level, enabling accurate cost allocation.</li>
+<p></p>
+<h3>Kubernetes Compatibility</h3>
+<p></p>
+Kled Clusters are fully compatible with standard Kubernetes, enabling users to use the same tools and workflows they are familiar with:
+<p></p>
+<ul>
+<li>**kubectl**: Users can interact with Kled Clusters using kubectl, the standard Kubernetes command-line tool.</li>
+<ul>
+<li>**Helm**: Helm charts can be deployed to Kled Clusters, enabling easy application deployment.</li>
+<ul>
+<li>**Kubernetes APIs**: Kled Clusters support the standard Kubernetes APIs, ensuring compatibility with existing tools and workflows.</li>
+<ul>
+<li>**Custom Resources**: Custom Resource Definitions (CRDs) can be used in Kled Clusters, enabling advanced use cases.</li>
+<p></p>
+This compatibility provides several key benefits:
+<p></p>
+<ul>
+<li>**Familiar Workflows**: Users can continue to use the tools and workflows they are familiar with, reducing the learning curve.</li>
+<ul>
+<li>**Ecosystem Integration**: Kled Clusters integrate with the broader Kubernetes ecosystem, enabling the use of a wide range of tools and services.</li>
+<ul>
+<li>**Future-Proof**: As Kubernetes evolves, Kled Clusters will continue to support the latest features and capabilities.</li>
+<p></p>
+<h3>Advanced Networking</h3>
+<p></p>
+Kled Clusters provide advanced networking capabilities, enabling secure and efficient communication between pods and services:
+<p></p>
+<pre><code class="language-yaml">
+Example networking configuration
+networking:
+  # Network plugin
+  plugin: cilium
+  # Pod CIDR
+  podCIDR: 10.42.0.0/16
+  # Service CIDR
+  serviceCIDR: 10.43.0.0/16
+  # DNS configuration
+  dns:
+    # DNS service
+    service: coredns
+    # DNS domain
+    domain: cluster.local
+  # Ingress configuration
+  ingress:
+    # Ingress controller
+    controller: nginx
+    # Ingress class
+    class: nginx
+  # Network policies
+  networkPolicies:
+    # Enable network policies
+    enabled: true
+    # Default deny all
+    defaultDeny: true
+</code></pre>
+<p></p>
+This advanced networking provides several key benefits:
+<p></p>
+<ul>
+<li>**Network Isolation**: Kled Clusters have their own network namespace, providing isolation from other clusters.</li>
+<ul>
+<li>**Service Discovery**: Services in Kled Clusters can be discovered using standard Kubernetes service discovery mechanisms.</li>
+<ul>
+<li>**Network Policies**: Network policies can be applied at the Kled Cluster level, enabling fine-grained control over network traffic.</li>
+<ul>
+<li>**Ingress Control**: Ingress controllers can be deployed to Kled Clusters, enabling external access to services.</li>
+<p></p>
+<h3>Persistent Storage</h3>
+<p></p>
+Kled Clusters support persistent storage, enabling stateful applications to run reliably:
+<p></p>
+<pre><code class="language-yaml">
+Example storage configuration
+storage:
+  # Storage class
+  storageClass: standard
+  # Storage capacity
+  capacity: 100Gi
+  # Volume binding mode
+  volumeBindingMode: Immediate
+  # Reclaim policy
+  reclaimPolicy: Delete
+  # Allow volume expansion
+  allowVolumeExpansion: true
+  # Mount options
+  mountOptions:
+    - discard
+    - noatime
+</code></pre>
+<p></p>
+This persistent storage provides several key benefits:
+<p></p>
+<ul>
+<li>**Stateful Applications**: Stateful applications can run reliably in Kled Clusters, with persistent storage for data.</li>
+<ul>
+<li>**Data Persistence**: Data persists across pod restarts and rescheduling, ensuring reliability.</li>
+<ul>
+<li>**Storage Classes**: Different storage classes can be used for different types of applications, optimizing performance and cost.</li>
+<ul>
+<li>**Volume Snapshots**: Volume snapshots can be used for backup and recovery, ensuring data safety.</li>
+<p></p>
+<h2>Integration with Kled Ecosystem</h2>
+<p></p>
+Kled Clusters integrate seamlessly with the broader Kled Ecosystem, providing a comprehensive solution for Kubernetes management:
+<p></p>
+<h3>Kled CLI</h3>
+<p></p>
+The Kled CLI provides a simple and intuitive way to manage Kled Clusters:
+<p></p>
+<pre><code class="language-bash">
+Create a Kled Cluster
+kled cluster create my-cluster --namespace my-namespace
+<p></p>
+Get Kled Clusters
+kled cluster get
+<p></p>
+Connect to a Kled Cluster
+kled cluster connect my-cluster
+<p></p>
+Delete a Kled Cluster
+kled cluster delete my-cluster
+</code></pre>
+<p></p>
+This integration provides several key benefits:
+<p></p>
+<ul>
+<li>**Simplified Management**: The Kled CLI simplifies the management of Kled Clusters, reducing complexity.</li>
+<ul>
+<li>**Consistent Experience**: The Kled CLI provides a consistent experience across different environments, from development to production.</li>
+<ul>
+<li>**Automation**: The Kled CLI can be used in scripts and CI/CD pipelines, enabling automation of cluster management.</li>
+<p></p>
+<h3>Kledspace</h3>
+<p></p>
+Kledspace provides a powerful development environment for Kubernetes, enabling developers to build, test, and debug applications directly in Kled Clusters:
+<p></p>
+<pre><code class="language-yaml">
+Example Kledspace configuration
+version: v1
+name: my-app
+<p></p>
+Development container configuration
+dev:
+  # Container image
+  image: kled/dev:latest
+<p></p>
+  # Port forwarding
+  ports:
+    - 8080:8080
+    - 9229:9229
+<p></p>
+  # File synchronization
+  sync:
+    - src: ./src
+      dest: /app/src
+    - src: ./package.json
+      dest: /app/package.json
+<p></p>
+  # Commands
+  commands:
+    - name: dev
+      command: npm run dev
+    - name: test
+      command: npm test
+    - name: build
+      command: npm run build
+</code></pre>
+<p></p>
+This integration provides several key benefits:
+<p></p>
+<ul>
+<li>**Development in Production-Like Environment**: Developers can work in an environment that closely resembles production, reducing the "works on my machine" problem.</li>
+<ul>
+<li>**Isolated Development**: Each developer can have their own isolated environment, preventing conflicts.</li>
+<ul>
+<li>**Efficient Resource Utilization**: Development environments can share the same underlying infrastructure, maximizing resource utilization.</li>
+<p></p>
+<h3>kPolicy</h3>
+<p></p>
+kPolicy provides a policy management system for Kubernetes, enabling administrators to define and enforce policies across Kled Clusters:
+<p></p>
+<pre><code class="language-yaml">
+Example kPolicy configuration
+apiVersion: policy.kled.io/v1
+kind: Policy
+metadata:
+  name: resource-limits
+spec:
+  # Policy rules
+  rules:
+    - name: container-limits
+      match:
+        kinds:
+          - Pod
+      validate:
+        message: "Container must have resource limits"
+        pattern:
+          spec:
+            containers:
+              - resources:
+                  limits:
+                    memory: "?*"
+                    cpu: "?*"
+</code></pre>
+<p></p>
+This integration provides several key benefits:
+<p></p>
+<ul>
+<li>**Consistent Policy Enforcement**: Policies can be enforced consistently across Kled Clusters, ensuring compliance with security and operational requirements.</li>
+<ul>
+<li>**Centralized Policy Management**: Policies can be managed centrally and applied to multiple Kled Clusters, simplifying administration.</li>
+<ul>
+<li>**Policy Inheritance**: Kled Clusters can inherit policies from parent clusters, ensuring consistent policy enforcement.</li>
+<p></p>
+<h2>Use Cases</h2>
+<p></p>
+<h3>Development Environments</h3>
+<p></p>
+Kled Clusters provide isolated development environments for teams, enabling them to work independently without interfering with each other:
+<p></p>
+<pre><code class="language-bash">
+Create a development Kled Cluster
+kled cluster create dev-cluster --namespace dev
+<p></p>
+Create a workspace for a project
+kled workspace create project-a --repo https://github.com/org/project-a --cluster dev-cluster
+<p></p>
+Deploy supporting services
+kled service deploy redis --cluster dev-cluster
+kled service deploy postgres --cluster dev-cluster
+</code></pre>
+<p></p>
+This use case provides several key benefits:
+<p></p>
+<ul>
+<li>**Isolated Development**: Each team can have its own isolated environment, preventing conflicts.</li>
+<ul>
+<li>**Production-Like Environment**: Development environments can closely resemble production, reducing the "works on my machine" problem.</li>
+<ul>
+<li>**Resource Efficiency**: Multiple development environments can share the same underlying infrastructure, maximizing resource utilization.</li>
+<p></p>
+<h3>Testing Environments</h3>
+<p></p>
+Kled Clusters provide isolated testing environments for validating applications before deployment to production:
+<p></p>
+<pre><code class="language-bash">
+Create a testing Kled Cluster
+kled cluster create test-cluster --namespace test
+<p></p>
+Deploy the application for testing
+kled app deploy --repo https://github.com/org/app --cluster test-cluster
+<p></p>
+Run tests
+kled app test --cluster test-cluster
+</code></pre>
+<p></p>
+This use case provides several key benefits:
+<p></p>
+<ul>
+<li>**Isolated Testing**: Each application can be tested in an isolated environment, preventing interference from other applications.</li>
+<ul>
+<li>**Production-Like Testing**: Testing environments can closely resemble production, ensuring accurate testing.</li>
+<ul>
+<li>**Parallel Testing**: Multiple tests can run in parallel in different Kled Clusters, accelerating the testing process.</li>
+<p></p>
+<h3>Multi-Tenant Production</h3>
+<p></p>
+Kled Clusters provide a secure and efficient solution for multi-tenant production environments:
+<p></p>
+<pre><code class="language-bash">
+Create a production Kled Cluster for a tenant
+kled cluster create tenant-a --namespace tenant-a-prod
+<p></p>
+Deploy the application for the tenant
+kled app deploy --repo https://github.com/org/tenant-a-app --cluster tenant-a
+<p></p>
+Scale the application
+kled app scale tenant-a-app --replicas 3 --cluster tenant-a
+</code></pre>
+<p></p>
+This use case provides several key benefits:
+<p></p>
+<ul>
+<li>**Tenant Isolation**: Each tenant can have its own isolated environment, ensuring security and preventing interference.</li>
+<ul>
+<li>**Resource Efficiency**: Multiple tenants can share the same underlying infrastructure, maximizing resource utilization.</li>
+<ul>
+<li>**Simplified Management**: Administrators can manage all tenants from a single host cluster, simplifying operations.</li>
+<p></p>
+<h2>Advanced Features</h2>
+<p></p>
+<h3>Cluster Templates</h3>
+<p></p>
+Kled Clusters support templates, enabling administrators to define standardized cluster configurations:
+<p></p>
+<pre><code class="language-yaml">
+Example cluster template
+apiVersion: kled.io/v1
+kind: KledClusterTemplate
+metadata:
+  name: standard-cluster
+spec:
+  # Base configuration
+  base:
+    # Kubernetes version
+    kubernetesVersion: 1.25.0
+    # Control plane configuration
+    controlPlane:
+      replicas: 1
+      resources:
+        limits:
+          cpu: "1"
+          memory: "2Gi"
+        requests:
+          cpu: "0.5"
+          memory: "1Gi"
+<p></p>
+  # Networking configuration
+  networking:
+    plugin: cilium
+    podCIDR: 10.42.0.0/16
+    serviceCIDR: 10.43.0.0/16
+<p></p>
+  # Storage configuration
+  storage:
+    storageClass: standard
+    capacity: 100Gi
+<p></p>
+  # Add-ons
+  addons:
+    # Metrics server
+    metricsServer:
+      enabled: true
+    # Dashboard
+    dashboard:
+      enabled: true
+    # Prometheus
+    prometheus:
+      enabled: true
+    # Grafana
+    grafana:
+      enabled: true
+</code></pre>
+<p></p>
+This feature provides several key benefits:
+<p></p>
+<ul>
+<li>**Standardized Configurations**: Administrators can define standardized configurations for different types of clusters, ensuring consistency.</li>
+<ul>
+<li>**Simplified Provisioning**: Users can create clusters from templates, simplifying the provisioning process.</li>
+<ul>
+<li>**Governance**: Templates can enforce organizational standards and best practices, ensuring compliance.</li>
+<p></p>
+<h3>Cluster Federation</h3>
+<p></p>
+Kled Clusters support federation, enabling resources to be shared and managed across multiple clusters:
+<p></p>
+<pre><code class="language-yaml">
+Example federation configuration
+apiVersion: kled.io/v1
+kind: KledClusterFederation
+metadata:
+  name: global-federation
+spec:
+  # Member clusters
+  members:
+    - name: cluster-1
+      context: cluster-1
+    - name: cluster-2
+      context: cluster-2
+    - name: cluster-3
+      context: cluster-3
+<p></p>
+  # Federated resources
+  resources:
+    # Federated namespaces
+    - kind: Namespace
+      propagation:
+        type: all
+    # Federated services
+    - kind: Service
+      propagation:
+        type: all
+    # Federated deployments
+    - kind: Deployment
+      propagation:
+        type: all
+</code></pre>
+<p></p>
+This feature provides several key benefits:
+<p></p>
+<ul>
+<li>**Resource Sharing**: Resources can be shared across multiple clusters, enabling global applications.</li>
+<ul>
+<li>**Centralized Management**: Resources can be managed centrally and propagated to member clusters, simplifying administration.</li>
+<ul>
+<li>**High Availability**: Applications can be deployed across multiple clusters, ensuring high availability.</li>
+<p></p>
+<h3>Cluster Upgrades</h3>
+<p></p>
+Kled Clusters support in-place upgrades, enabling administrators to upgrade clusters without disrupting applications:
+<p></p>
+<pre><code class="language-yaml">
+Example upgrade configuration
+apiVersion: kled.io/v1
+kind: KledClusterUpgrade
+metadata:
+  name: upgrade-to-1.25
+spec:
+  # Target cluster
+  cluster: my-cluster
+  # Target version
+  targetVersion: 1.25.0
+  # Upgrade strategy
+  strategy:
+    # Rolling upgrade
+    type: rolling
+    # Max unavailable
+    maxUnavailable: 1
+    # Max surge
+    maxSurge: 1
+  # Pre-upgrade hooks
+  preUpgradeHooks:
+    - name: backup
+      image: kled/backup:latest
+      command: ["backup", "--cluster", "my-cluster"]
+  # Post-upgrade hooks
+  postUpgradeHooks:
+    - name: verify
+      image: kled/verify:latest
+      command: ["verify", "--cluster", "my-cluster"]
+</code></pre>
+<p></p>
+This feature provides several key benefits:
+<p></p>
+<ul>
+<li>**Seamless Upgrades**: Clusters can be upgraded without disrupting applications, ensuring continuous operation.</li>
+<ul>
+<li>**Controlled Rollout**: Upgrades can be rolled out in a controlled manner, minimizing risk.</li>
+<ul>
+<li>**Automated Verification**: Pre and post-upgrade hooks can automate verification, ensuring successful upgrades.</li>
+<p></p>
+<h2>Benefits</h2>
+<p></p>
+<h3>Resource Efficiency</h3>
+<p></p>
+Kled Clusters enable efficient resource utilization by allowing multiple clusters to share the same underlying infrastructure:
+<p></p>
+<ul>
+<li>**Shared Worker Nodes**: Kled Clusters share the same worker nodes, eliminating the need for dedicated nodes for each cluster.</li>
+<ul>
+<li>**Optimized Resource Allocation**: Resources can be allocated dynamically based on workload requirements, ensuring optimal utilization.</li>
+<ul>
+<li>**Reduced Management Overhead**: A single host cluster can manage multiple Kled Clusters, reducing operational complexity and cost.</li>
+<p></p>
+<h3>Enhanced Security</h3>
+<p></p>
+Kled Clusters provide strong isolation between different workloads, enhancing security:
+<p></p>
+<ul>
+<li>**Control Plane Isolation**: Each Kled Cluster has its own control plane, preventing unauthorized access to other clusters.</li>
+<ul>
+<li>**Network Isolation**: Kled Clusters have their own network namespace, preventing unauthorized network access.</li>
+<ul>
+<li>**Resource Isolation**: Resources in one Kled Cluster are isolated from other clusters, preventing interference.</li>
+<ul>
+<li>**Policy Enforcement**: Policies can be enforced at the Kled Cluster level, ensuring compliance with security requirements.</li>
+<p></p>
+<h3>Simplified Management</h3>
+<p></p>
+Kled Clusters simplify the management of multiple Kubernetes environments:
+<p></p>
+<ul>
+<li>**Centralized Administration**: All Kled Clusters can be managed from a single host cluster, simplifying administration.</li>
+<ul>
+<li>**Standardized Configurations**: Cluster templates ensure standardized configurations across all clusters.</li>
+<ul>
+<li>**Automated Operations**: Cluster operations can be automated using the Kled CLI and API, reducing manual effort.</li>
+<ul>
+<li>**Unified Monitoring**: All Kled Clusters can be monitored from a single dashboard, providing comprehensive visibility.</li>
+<p></p>
+<h2>Conclusion</h2>
+<p></p>
+Kled Clusters provide a powerful solution for multi-tenancy in Kubernetes, enabling teams to work in isolated environments while efficiently sharing the underlying infrastructure. By providing isolated control planes, resource synchronization, and advanced features like templates and federation, Kled Clusters enable enterprises to maximize resource utilization while maintaining strong isolation between different teams and workloads.
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Kled.io. All rights reserved.</p>
+    </footer>
+</body>
+</html>

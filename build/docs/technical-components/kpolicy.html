@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kPolicy - Kled.io Ecosystem Documentation</title>
+    <link rel="stylesheet" href="/css/custom.css">
+    <style>
+        :root {
+            --primary-color: #0066cc;
+            --secondary-color: #4CAF50;
+            --accent-color: #FF5722;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --border-color: #ddd;
+            --sidebar-width: 280px;
+            --header-height: 60px;
+            --content-max-width: 1200px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0 20px;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .main-container {
+            display: flex;
+            margin-top: var(--header-height);
+            flex: 1;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--light-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            position: fixed;
+            top: var(--header-height);
+            bottom: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: var(--text-color);
+            display: block;
+            padding: 5px 0;
+            transition: color 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: var(--primary-color);
+        }
+
+        .content {
+            flex: 1;
+            padding: 30px;
+            margin-left: var(--sidebar-width);
+            max-width: calc(var(--content-max-width) - var(--sidebar-width));
+        }
+
+        .content h1 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .content p {
+            margin-bottom: 15px;
+        }
+
+        .content ul, .content ol {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+
+        .content a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .content a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: var(--light-bg);
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .content {
+                margin-left: 0;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kled.io Ecosystem Documentation</h1>
+    </header>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <h2>Documentation</h2>
+            <ul>
+                <li><a href="/docs/overview/index.html">Overview</a></li>
+                <li>
+                    <h3>Architecture</h3>
+                    <ul>
+                        <li><a href="/docs/architecture/index.html">Architecture Overview</a></li>
+                        <li><a href="/docs/architecture/workspace-technology.html">Workspace Technology</a></li>
+                        <li><a href="/docs/architecture/kled-cluster.html">Kled Cluster</a></li>
+                        <li><a href="/docs/architecture/pure-rust-communication.html">Pure Rust Communication</a></li>
+                        <li><a href="/docs/architecture/flutter-ui.html">Flutter UI</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <h3>Technical Components</h3>
+                    <ul>
+                        <li><a href="/docs/technical-components/index.html">Components Overview</a></li>
+                        <li><a href="/docs/technical-components/cli.html">CLI</a></li>
+                        <li><a href="/docs/technical-components/gateway.html">Gateway</a></li>
+                        <li><a href="/docs/technical-components/kledspace.html">Kledspace</a></li>
+                        <li><a href="/docs/technical-components/kpolicy.html">kPolicy</a></li>
+                        <li><a href="/docs/technical-components/kled-cluster-integration.html">Kled Cluster Integration</a></li>
+                        <li><a href="/docs/technical-components/virtual-cluster-integration.html">Virtual Cluster Integration</a></li>
+                        <li><a href="/docs/technical-components/rust-flutter-bridge.html">Rust-Flutter Bridge</a></li>
+                    </ul>
+                </li>
+                <li><a href="/docs/enterprise-ai-ml/index.html">Enterprise AI/ML</a></li>
+                <li><a href="/docs/roadmap/index.html">Roadmap</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+<p></p>
+kPolicy is a powerful policy management system for Kubernetes that enables administrators to define and enforce policies across clusters using JavaScript. This proprietary technology provides a flexible and intuitive way to implement security, compliance, and operational policies in Kubernetes environments.
+<p></p>
+<h2>Overview</h2>
+<p></p>
+<pre><code class="language-mermaid">
+graph TD
+    A[Kled CLI] --> B[kPolicy Controller]
+    B --> C[Policy Engine]
+    C --> D[JavaScript Runtime]
+    C --> E[Policy Store]
+<p></p>
+    F[Policy Author] --> G[kPolicy SDK]
+    G --> H[Policy Repository]
+    H --> E
+<p></p>
+    subgraph "User Interface"
+    A
+    F
+    end
+<p></p>
+    subgraph "Control Plane"
+    B
+    end
+<p></p>
+    subgraph "kPolicy"
+    C
+    D
+    E
+    G
+    H
+    end
+<p></p>
+    subgraph "Kubernetes Cluster"
+    I[Admission Controller]
+    J[Audit Controller]
+    K[Enforcement Controller]
+    end
+<p></p>
+    B --> I
+    B --> J
+    B --> K
+</code></pre>
+<p></p>
+kPolicy is designed to provide a comprehensive policy management solution for Kubernetes, enabling administrators to define, enforce, and audit policies across clusters. By leveraging JavaScript as the policy language, kPolicy makes it easy for administrators to write and maintain policies, while still providing the flexibility and power needed to address complex policy requirements.
+<p></p>
+<h2>Key Features</h2>
+<p></p>
+<h3>JavaScript-Based Policies</h3>
+<p></p>
+kPolicy uses JavaScript as the policy language, providing a familiar and powerful way to define policies:
+<p></p>
+<pre><code class="language-javascript">
+// Example policy: Require resource limits for all containers
+export default function(request) {
+  // Skip if not a Pod
+  if (request.kind.kind !== "Pod") {
+    return true;
+  }
+<p></p>
+  // Check each container for resource limits
+  const containers = request.object.spec.containers || [];
+  for (const container of containers) {
+    if (!container.resources || !container.resources.limits) {
+      return {
+        allowed: false,
+        message: `Container ${container.name} must have resource limits defined`
+      };
+    }
+<p></p>
+    // Check for memory and CPU limits
+    const limits = container.resources.limits;
+    if (!limits.memory || !limits.cpu) {
+      return {
+        allowed: false,
+        message: `Container ${container.name} must have memory and CPU limits defined`
+      };
+    }
+  }
+<p></p>
+  // All containers have resource limits
+  return true;
+}
+</code></pre>
+<p></p>
+Key benefits of JavaScript-based policies:
+<p></p>
+<ul>
+<li>**Familiar Language**: JavaScript is widely known, making it easy for administrators to write and understand policies.</li>
+<ul>
+<li>**Expressive Power**: JavaScript provides the expressive power needed to implement complex policies.</li>
+<ul>
+<li>**Rich Ecosystem**: The JavaScript ecosystem provides a wealth of libraries and tools for policy development.</li>
+<ul>
+<li>**Easy Integration**: JavaScript policies can easily integrate with external systems and APIs.</li>
+<p></p>
+<h3>Policy Types</h3>
+<p></p>
+kPolicy supports multiple policy types, enabling administrators to address different policy requirements:
+<p></p>
+<h4>Validation Policies</h4>
+<p></p>
+Validation policies ensure that resources meet specific requirements before they are created or updated:
+<p></p>
+<pre><code class="language-javascript">
+// Example validation policy: Require labels for all resources
+export default function(request) {
+  // Check for required labels
+  const requiredLabels = ["app", "environment", "team"];
+  const labels = request.object.metadata.labels || {};
+<p></p>
+  // Check each required label
+  for (const label of requiredLabels) {
+    if (!labels[label]) {
+      return {
+        allowed: false,
+        message: `Resource must have label: ${label}`
+      };
+    }
+  }
+<p></p>
+  // All required labels are present
+  return true;
+}
+</code></pre>
+<p></p>
+<h4>Mutation Policies</h4>
+<p></p>
+Mutation policies modify resources before they are created or updated, ensuring that they meet specific requirements:
+<p></p>
+<pre><code class="language-javascript">
+// Example mutation policy: Add default labels to all resources
+export default function(request) {
+  // Get the resource
+  const resource = request.object;
+<p></p>
+  // Ensure labels exist
+  if (!resource.metadata.labels) {
+    resource.metadata.labels = {};
+  }
+<p></p>
+  // Add default labels
+  resource.metadata.labels["managed-by"] = "kpolicy";
+  resource.metadata.labels["created-at"] = new Date().toISOString();
+<p></p>
+  // Return the modified resource
+  return {
+    allowed: true,
+    patchType: "JSONPatch",
+    patch: [
+      {
+        op: "add",
+        path: "/metadata/labels/managed-by",
+        value: "kpolicy"
+      },
+      {
+        op: "add",
+        path: "/metadata/labels/created-at",
+        value: new Date().toISOString()
+      }
+    ]
+  };
+}
+</code></pre>
+<p></p>
+<h4>Audit Policies</h4>
+<p></p>
+Audit policies check existing resources for compliance with policies, enabling administrators to identify and remediate non-compliant resources:
+<p></p>
+<pre><code class="language-javascript">
+// Example audit policy: Check for deprecated API versions
+export default function(request) {
+  // Check for deprecated API versions
+  const deprecatedVersions = {
+    "apps/v1beta1": "apps/v1",
+    "apps/v1beta2": "apps/v1",
+    "extensions/v1beta1": "apps/v1"
+  };
+<p></p>
+  // Check if the resource uses a deprecated API version
+  const apiVersion = request.object.apiVersion;
+  if (deprecatedVersions[apiVersion]) {
+    return {
+      compliant: false,
+      message: `Resource uses deprecated API version: ${apiVersion}. Use ${deprecatedVersions[apiVersion]} instead.`
+    };
+  }
+<p></p>
+  // Resource uses a supported API version
+  return {
+    compliant: true
+  };
+}
+</code></pre>
+<p></p>
+<h3>Policy SDK</h3>
+<p></p>
+kPolicy provides a comprehensive SDK for policy development, enabling administrators to write, test, and deploy policies with ease:
+<p></p>
+<pre><code class="language-javascript">
+// Example policy using the SDK
+import { Policy, ValidationPolicy } from "@kled/kpolicy-sdk";
+<p></p>
+// Define a validation policy
+@Policy({
+  name: "require-resource-limits",
+  description: "Require resource limits for all containers",
+  resources: ["Pod"]
+})
+export default class RequireResourceLimits extends ValidationPolicy {
+  validate(request) {
+    // Check each container for resource limits
+    const containers = request.object.spec.containers || [];
+    for (const container of containers) {
+      if (!container.resources || !container.resources.limits) {
+        return this.deny(`Container ${container.name} must have resource limits defined`);
+      }
+<p></p>
+      // Check for memory and CPU limits
+      const limits = container.resources.limits;
+      if (!limits.memory || !limits.cpu) {
+        return this.deny(`Container ${container.name} must have memory and CPU limits defined`);
+      }
+    }
+<p></p>
+    // All containers have resource limits
+    return this.allow();
+  }
+}
+</code></pre>
+<p></p>
+The SDK provides several key features:
+<p></p>
+<ul>
+<li>**Policy Classes**: Pre-defined classes for different policy types, making it easy to implement common policy patterns.</li>
+<ul>
+<li>**Testing Utilities**: Tools for testing policies, ensuring that they work as expected before deployment.</li>
+<ul>
+<li>**Deployment Tools**: Tools for deploying policies to Kubernetes clusters, simplifying the policy lifecycle.</li>
+<ul>
+<li>**Documentation Generation**: Tools for generating documentation from policies, making it easy to understand and maintain policies.</li>
+<p></p>
+<h3>Policy Repository</h3>
+<p></p>
+kPolicy includes a policy repository for storing and managing policies, enabling administrators to organize and version policies:
+<p></p>
+<pre><code class="language-yaml">
+Example policy repository configuration
+apiVersion: kpolicy.kled.io/v1
+kind: PolicyRepository
+metadata:
+  name: organization-policies
+spec:
+  # Repository URL
+  url: https://github.com/organization/policies
+<p></p>
+  # Branch to use
+  branch: main
+<p></p>
+  # Authentication
+  auth:
+    # SSH key for authentication
+    sshKey:
+      secretName: github-ssh-key
+      secretKey: id_rsa
+<p></p>
+  # Sync configuration
+  sync:
+    # Sync interval
+    interval: 5m
+<p></p>
+    # Sync timeout
+    timeout: 1m
+<p></p>
+    # Retry configuration
+    retry:
+      # Number of retries
+      count: 3
+<p></p>
+      # Retry interval
+      interval: 1m
+</code></pre>
+<p></p>
+The policy repository provides several key features:
+<p></p>
+<ul>
+<li>**Version Control**: Policies are stored in a version control system, enabling administrators to track changes and roll back if needed.</li>
+<ul>
+<li>**Collaboration**: Multiple administrators can collaborate on policies, using standard version control workflows.</li>
+<ul>
+<li>**CI/CD Integration**: The policy repository can be integrated with CI/CD pipelines, enabling automated testing and deployment of policies.</li>
+<ul>
+<li>**Policy Reuse**: Policies can be shared across clusters, ensuring consistent policy enforcement.</li>
+<p></p>
+<h3>Policy Enforcement</h3>
+<p></p>
+kPolicy provides comprehensive policy enforcement capabilities, ensuring that policies are applied consistently across clusters:
+<p></p>
+<pre><code class="language-yaml">
+Example policy enforcement configuration
+apiVersion: kpolicy.kled.io/v1
+kind: PolicyEnforcement
+metadata:
+  name: organization-enforcement
+spec:
+  # Policies to enforce
+  policies:
+    - name: require-resource-limits
+      enforcement: deny
+    - name: require-labels
+      enforcement: deny
+    - name: add-default-labels
+      enforcement: mutate
+    - name: check-deprecated-api-versions
+      enforcement: audit
+<p></p>
+  # Enforcement scope
+  scope:
+    # Namespaces to include
+    namespaces:
+      - default
+      - kube-system
+      - kube-public
+<p></p>
+    # Resources to include
+    resources:
+      - pods
+      - deployments
+      - services
+<p></p>
+    # Exclude system resources
+    excludeSystemResources: true
+</code></pre>
+<p></p>
+Policy enforcement provides several key features:
+<p></p>
+<ul>
+<li>**Flexible Enforcement**: Policies can be enforced in different ways, including validation, mutation, and audit.</li>
+<ul>
+<li>**Scoped Enforcement**: Policies can be applied to specific namespaces, resources, and resource types.</li>
+<ul>
+<li>**Exemptions**: Resources can be exempted from policy enforcement, enabling administrators to handle special cases.</li>
+<ul>
+<li>**Dry Run**: Policies can be applied in dry run mode, enabling administrators to test policies before enforcing them.</li>
+<p></p>
+<h3>Integration with Kled Clusters</h3>
+<p></p>
+kPolicy integrates seamlessly with Kled Clusters, enabling administrators to define and enforce policies across clusters:
+<p></p>
+<pre><code class="language-yaml">
+Example Kled Cluster policy configuration
+apiVersion: kled.io/v1
+kind: KledCluster
+metadata:
+  name: production-cluster
+spec:
+  # Cluster configuration
+  # ...
+<p></p>
+  # Policy configuration
+  policies:
+    # Policy repository
+    repository:
+      name: organization-policies
+<p></p>
+    # Policy enforcement
+    enforcement:
+      name: organization-enforcement
+</code></pre>
+<p></p>
+This integration provides several key benefits:
+<p></p>
+<ul>
+<li>**Centralized Policy Management**: Policies can be managed centrally and applied consistently across clusters.</li>
+<ul>
+<li>**Cluster-Specific Policies**: Clusters can have their own policies, addressing specific requirements.</li>
+<ul>
+<li>**Policy Inheritance**: Clusters can inherit policies from parent clusters, ensuring consistent policy enforcement.</li>
+<ul>
+<li>**Policy Overrides**: Clusters can override policies from parent clusters, enabling flexibility while maintaining consistency.</li>
+<p></p>
+<h2>Example Policies</h2>
+<p></p>
+<h3>Security Policies</h3>
+<p></p>
+kPolicy enables administrators to implement comprehensive security policies, ensuring that resources meet security requirements:
+<p></p>
+<pre><code class="language-javascript">
+// Example security policy: Require secure pod configuration
+export default function(request) {
+  // Skip if not a Pod
+  if (request.kind.kind !== "Pod") {
+    return true;
+  }
+<p></p>
+  // Get the pod
+  const pod = request.object;
+<p></p>
+  // Check for privileged containers
+  const containers = pod.spec.containers || [];
+  for (const container of containers) {
+    if (container.securityContext && container.securityContext.privileged) {
+      return {
+        allowed: false,
+        message: `Container ${container.name} must not be privileged`
+      };
+    }
+  }
+<p></p>
+  // Check for host network
+  if (pod.spec.hostNetwork) {
+    return {
+      allowed: false,
+      message: "Pod must not use host network"
+    };
+  }
+<p></p>
+  // Check for host PID
+  if (pod.spec.hostPID) {
+    return {
+      allowed: false,
+      message: "Pod must not use host PID"
+    };
+  }
+<p></p>
+  // Check for host IPC
+  if (pod.spec.hostIPC) {
+    return {
+      allowed: false,
+      message: "Pod must not use host IPC"
+    };
+  }
+<p></p>
+  // Pod meets security requirements
+  return true;
+}
+</code></pre>
+<p></p>
+<h3>Compliance Policies</h3>
+<p></p>
+kPolicy enables administrators to implement compliance policies, ensuring that resources meet regulatory requirements:
+<p></p>
+<pre><code class="language-javascript">
+// Example compliance policy: Require data classification labels
+export default function(request) {
+  // Get the resource
+  const resource = request.object;
+<p></p>
+  // Get the labels
+  const labels = resource.metadata.labels || {};
+<p></p>
+  // Check for data classification label
+  if (!labels["data-classification"]) {
+    return {
+      allowed: false,
+      message: "Resource must have a data-classification label"
+    };
+  }
+<p></p>
+  // Check for valid data classification
+  const validClassifications = ["public", "internal", "confidential", "restricted"];
+  if (!validClassifications.includes(labels["data-classification"])) {
+    return {
+      allowed: false,
+      message: `Invalid data classification: ${labels["data-classification"]}. Must be one of: ${validClassifications.join(", ")}`
+    };
+  }
+<p></p>
+  // Resource meets compliance requirements
+  return true;
+}
+</code></pre>
+<p></p>
+<h3>Operational Policies</h3>
+<p></p>
+kPolicy enables administrators to implement operational policies, ensuring that resources meet operational requirements:
+<p></p>
+<pre><code class="language-javascript">
+// Example operational policy: Require resource quotas for namespaces
+export default function(request) {
+  // Skip if not a Namespace
+  if (request.kind.kind !== "Namespace") {
+    return true;
+  }
+<p></p>
+  // Get the namespace
+  const namespace = request.object;
+<p></p>
+  // Check if the namespace has a resource quota
+  const resourceQuotas = request.related.ResourceQuota || [];
+  if (resourceQuotas.length === 0) {
+    return {
+      allowed: false,
+      message: "Namespace must have a resource quota"
+    };
+  }
+<p></p>
+  // Namespace meets operational requirements
+  return true;
+}
+</code></pre>
+<p></p>
+<h2>Benefits</h2>
+<p></p>
+<h3>Enhanced Security</h3>
+<p></p>
+kPolicy enhances security by enabling administrators to define and enforce security policies across clusters:
+<p></p>
+<ul>
+<li>**Consistent Security Policies**: Security policies are applied consistently across clusters, reducing the risk of security vulnerabilities.</li>
+<ul>
+<li>**Automated Security Checks**: Security checks are automated, ensuring that all resources meet security requirements.</li>
+<ul>
+<li>**Comprehensive Security Coverage**: Security policies can address a wide range of security concerns, from container security to network security.</li>
+<ul>
+<li>**Proactive Security**: Security policies are enforced before resources are created or updated, preventing security issues before they occur.</li>
+<p></p>
+<h3>Simplified Compliance</h3>
+<p></p>
+kPolicy simplifies compliance by enabling administrators to define and enforce compliance policies across clusters:
+<p></p>
+<ul>
+<li>**Regulatory Compliance**: Compliance policies can address regulatory requirements, such as GDPR, HIPAA, and PCI DSS.</li>
+<ul>
+<li>**Industry Standards**: Compliance policies can address industry standards, such as CIS Kubernetes Benchmarks and NIST Cybersecurity Framework.</li>
+<ul>
+<li>**Organizational Policies**: Compliance policies can address organizational policies, such as data classification and access control.</li>
+<ul>
+<li>**Compliance Reporting**: Compliance reports can be generated from policy audit results, providing visibility into compliance status.</li>
+<p></p>
+<h3>Operational Efficiency</h3>
+<p></p>
+kPolicy improves operational efficiency by enabling administrators to define and enforce operational policies across clusters:
+<p></p>
+<ul>
+<li>**Standardized Configurations**: Operational policies ensure that resources are configured consistently, reducing the risk of configuration errors.</li>
+<ul>
+<li>**Automated Remediation**: Operational policies can automatically remediate non-compliant resources, reducing the need for manual intervention.</li>
+<ul>
+<li>**Resource Optimization**: Operational policies can ensure that resources are optimized for performance and cost, improving overall efficiency.</li>
+<ul>
+<li>**Reduced Management Overhead**: Centralized policy management reduces the overhead of managing policies across clusters.</li>
+<p></p>
+<h2>Use Cases</h2>
+<p></p>
+<h3>Multi-Cluster Policy Management</h3>
+<p></p>
+kPolicy enables administrators to manage policies across multiple clusters, ensuring consistent policy enforcement:
+<p></p>
+<pre><code class="language-bash">
+Create a policy repository
+kled policy repository create organization-policies --url https://github.com/organization/policies --branch main
+<p></p>
+Create a policy enforcement configuration
+kled policy enforcement create organization-enforcement --policies require-resource-limits,require-labels,add-default-labels
+<p></p>
+Apply the policy enforcement configuration to a cluster
+kled cluster update production-cluster --policies.enforcement organization-enforcement
+</code></pre>
+<p></p>
+<h3>Compliance Auditing</h3>
+<p></p>
+kPolicy enables administrators to audit clusters for compliance with policies, identifying and remediating non-compliant resources:
+<p></p>
+<pre><code class="language-bash">
+Run a compliance audit
+kled policy audit run --cluster production-cluster --policies require-resource-limits,require-labels
+<p></p>
+View audit results
+kled policy audit results --cluster production-cluster
+<p></p>
+Remediate non-compliant resources
+kled policy audit remediate --cluster production-cluster --policies require-resource-limits,require-labels
+</code></pre>
+<p></p>
+<h3>Policy Development and Testing</h3>
+<p></p>
+kPolicy enables administrators to develop and test policies before deploying them to clusters:
+<p></p>
+<pre><code class="language-bash">
+Create a new policy
+kled policy create require-resource-limits --type validation
+<p></p>
+Test the policy
+kled policy test require-resource-limits --resource pod.yaml
+<p></p>
+Deploy the policy
+kled policy deploy require-resource-limits --cluster production-cluster
+</code></pre>
+<p></p>
+<h2>Conclusion</h2>
+<p></p>
+kPolicy is a powerful policy management system for Kubernetes that enables administrators to define and enforce policies across clusters using JavaScript. By providing a flexible and intuitive way to implement security, compliance, and operational policies, kPolicy helps enterprises ensure the security, compliance, and operational efficiency of their Kubernetes environments.
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Kled.io. All rights reserved.</p>
+    </footer>
+</body>
+</html>

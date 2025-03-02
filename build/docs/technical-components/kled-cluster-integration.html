@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kled Cluster Integration - Kled.io Ecosystem Documentation</title>
+    <link rel="stylesheet" href="/css/custom.css">
+    <style>
+        :root {
+            --primary-color: #0066cc;
+            --secondary-color: #4CAF50;
+            --accent-color: #FF5722;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --border-color: #ddd;
+            --sidebar-width: 280px;
+            --header-height: 60px;
+            --content-max-width: 1200px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0 20px;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .main-container {
+            display: flex;
+            margin-top: var(--header-height);
+            flex: 1;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--light-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            position: fixed;
+            top: var(--header-height);
+            bottom: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: var(--text-color);
+            display: block;
+            padding: 5px 0;
+            transition: color 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: var(--primary-color);
+        }
+
+        .content {
+            flex: 1;
+            padding: 30px;
+            margin-left: var(--sidebar-width);
+            max-width: calc(var(--content-max-width) - var(--sidebar-width));
+        }
+
+        .content h1 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .content p {
+            margin-bottom: 15px;
+        }
+
+        .content ul, .content ol {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+
+        .content a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .content a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: var(--light-bg);
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .content {
+                margin-left: 0;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kled.io Ecosystem Documentation</h1>
+    </header>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <h2>Documentation</h2>
+            <ul>
+                <li><a href="/docs/overview/index.html">Overview</a></li>
+                <li>
+                    <h3>Architecture</h3>
+                    <ul>
+                        <li><a href="/docs/architecture/index.html">Architecture Overview</a></li>
+                        <li><a href="/docs/architecture/workspace-technology.html">Workspace Technology</a></li>
+                        <li><a href="/docs/architecture/kled-cluster.html">Kled Cluster</a></li>
+                        <li><a href="/docs/architecture/pure-rust-communication.html">Pure Rust Communication</a></li>
+                        <li><a href="/docs/architecture/flutter-ui.html">Flutter UI</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <h3>Technical Components</h3>
+                    <ul>
+                        <li><a href="/docs/technical-components/index.html">Components Overview</a></li>
+                        <li><a href="/docs/technical-components/cli.html">CLI</a></li>
+                        <li><a href="/docs/technical-components/gateway.html">Gateway</a></li>
+                        <li><a href="/docs/technical-components/kledspace.html">Kledspace</a></li>
+                        <li><a href="/docs/technical-components/kpolicy.html">kPolicy</a></li>
+                        <li><a href="/docs/technical-components/kled-cluster-integration.html">Kled Cluster Integration</a></li>
+                        <li><a href="/docs/technical-components/virtual-cluster-integration.html">Virtual Cluster Integration</a></li>
+                        <li><a href="/docs/technical-components/rust-flutter-bridge.html">Rust-Flutter Bridge</a></li>
+                    </ul>
+                </li>
+                <li><a href="/docs/enterprise-ai-ml/index.html">Enterprise AI/ML</a></li>
+                <li><a href="/docs/roadmap/index.html">Roadmap</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+<p></p>
+<h2>Overview</h2>
+<p></p>
+The Kled Cluster Integration is a key component of the Kled.io Ecosystem, providing a secure and efficient environment for running AI/ML workloads. Kled Clusters are fully operable Kubernetes clusters running inside Physical Clusters, enabling enterprises to maximize the value of their infrastructure investments while ensuring the security and performance of their AI/ML applications.
+<p></p>
+<h2>Architecture</h2>
+<p></p>
+<pre><code class="language-mermaid">
+graph TD
+    A[Kled CLI] --> B[Kled Cluster Controller]
+    B --> C[Kled Cluster 1]
+    B --> D[Kled Cluster 2]
+    B --> E[Kled Cluster N]
+<p></p>
+    C --> F[Workspace Pods]
+    C --> G[Service Pods]
+<p></p>
+    F --> H[AI/ML Workloads]
+    G --> I[Supporting Services]
+<p></p>
+    subgraph "User Interface"
+    A
+    end
+<p></p>
+    subgraph "Control Plane"
+    B
+    end
+<p></p>
+    subgraph "Kled Clusters"
+    C
+    D
+    E
+    end
+<p></p>
+    subgraph "Workloads"
+    F
+    G
+    H
+    I
+    end
+</code></pre>
+<p></p>
+The Kled Cluster Integration sits at the foundation of the Kled.io Ecosystem, providing a secure and efficient environment for running AI/ML workloads. This architecture enables multiple Kled Clusters to run on a single host cluster, each with its own isolated environment and resources.
+<p></p>
+<h2>Key Components</h2>
+<p></p>
+<h3>Kled Cluster Controller</h3>
+<p></p>
+The Kled Cluster Controller is responsible for managing the lifecycle of Kled Clusters, including creation, deletion, and updates. It ensures that each Kled Cluster has the necessary resources and configurations to operate effectively.
+<p></p>
+</code></pre>go
+// Kled Cluster Controller
+type Controller struct {
+    // Host cluster configuration
+    HostConfig *config.HostConfig
+<p></p>
+    // Kled Cluster configurations
+    KledClusters map[string]*config.KledClusterConfig
+<p></p>
+    // Kubernetes client
+    Client kubernetes.Interface
+}
+<p></p>
+// Create a new Kled Cluster
+func (c *Controller) CreateKledCluster(name string, config *config.KledClusterConfig) error {
+    // Create the Kled Cluster namespace
+    namespace := &corev1.Namespace{
+        ObjectMeta: metav1.ObjectMeta{
+            Name: name,
+        },
+    }
+<p></p>
+    _, err := c.Client.CoreV1().Namespaces().Create(context.Background(), namespace, metav1.CreateOptions{})
+    if err != nil {
+        return err
+    }
+<p></p>
+    // Create the Kled Cluster control plane
+    controlPlane := &appsv1.StatefulSet{
+        ObjectMeta: metav1.ObjectMeta{
+            Name:      name + "-control-plane",
+            Namespace: name,
+        },
+        Spec: appsv1.StatefulSetSpec{
+            // Control plane configuration
+        },
+    }
+<p></p>
+    _, err = c.Client.AppsV1().StatefulSets(name).Create(context.Background(), controlPlane, metav1.CreateOptions{})
+    if err != nil {
+        return err
+    }
+<p></p>
+    // Create the Kled Cluster service
+    service := &corev1.Service{
+        ObjectMeta: metav1.ObjectMeta{
+            Name:      name + "-api",
+            Namespace: name,
+        },
+        Spec: corev1.ServiceSpec{
+            // Service configuration
+        },
+    }
+<p></p>
+    _, err = c.Client.CoreV1().Services(name).Create(context.Background(), service, metav1.CreateOptions{})
+    if err != nil {
+        return err
+    }
+<p></p>
+    // Store the Kled Cluster configuration
+    c.KledClusters[name] = config
+<p></p>
+    return nil
+}
+</code></pre>
+<p></p>
+<h3>Advanced Workspace Technology</h3>
+<p></p>
+The Kled.io Ecosystem features an advanced workspace technology that provides a comprehensive environment for development and deployment. This technology is built on several key components:
+<p></p>
+<h4>Custom Preload Image</h4>
+<p></p>
+The Kled.io Ecosystem includes a custom preload image that provides a comprehensive development environment with support for multiple languages and tools:
+<p></p>
+</code></pre>dockerfile
+FROM ubuntu:22.04
+<p></p>
+Install common development tools
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    git \
+    python3 \
+    python3-pip \
+    nodejs \
+    npm \
+    golang \
+    rustc \
+    cargo \
+    openjdk-17-jdk \
+    maven \
+    gradle \
+    docker.io \
+    kubectl \
+    && rm -rf /var/lib/apt/lists/*
+<p></p>
+Set up a non-root user
+RUN useradd -m -s /bin/bash kled
+RUN echo "kled ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/kled
+<p></p>
+Set up Docker to run without sudo
+RUN usermod -aG docker kled
+<p></p>
+Set up workspace directory
+WORKDIR /workspace
+RUN chown kled:kled /workspace
+<p></p>
+USER kled
+<p></p>
+Install language-specific tools
+RUN pip3 install --user pipenv poetry
+RUN npm install -g yarn pnpm
+RUN cargo install cargo-watch cargo-edit
+<p></p>
+Set up environment variables
+ENV PATH="/home/kled/.local/bin:${PATH}"
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+<p></p>
+Set up entrypoint
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+</code></pre>
+<p></p>
+This custom preload image provides several key benefits:
+<p></p>
+<ul>
+<li>**Full Language Support**: The image includes support for multiple programming languages, including Python, Node.js, Go, Rust, and Java.</li>
+<ul>
+<li>**Sudoless Environment**: The image is configured to allow users to run commands without sudo, improving security and usability.</li>
+<ul>
+<li>**Docker Support**: The image includes Docker, enabling containerized development within the workspace.</li>
+<ul>
+<li>**Kubernetes Tools**: The image includes kubectl and other Kubernetes tools for managing clusters.</li>
+<p></p>
+<h4>Workspace Providers</h4>
+<p></p>
+The Kled.io Ecosystem supports multiple workspace providers, enabling users to create workspaces in different environments:
+<p></p>
+<ul>
+<li>**Local Provider**: Create workspaces on the local machine for development and testing.</li>
+<ul>
+<li>**Kubernetes Provider**: Create workspaces in a Kubernetes cluster for production deployments.</li>
+<ul>
+<li>**Cloud Providers**: Create workspaces in cloud environments, including AWS, GCP, and Azure.</li>
+<p></p>
+Each provider is implemented as a plugin, allowing for easy extension and customization:
+<p></p>
+</code></pre>go
+// Workspace Provider interface
+type Provider interface {
+    // Create a workspace
+    CreateWorkspace(name string, config *WorkspaceConfig) error
+<p></p>
+    // Delete a workspace
+    DeleteWorkspace(name string) error
+<p></p>
+    // Start a workspace
+    StartWorkspace(name string) error
+<p></p>
+    // Stop a workspace
+    StopWorkspace(name string) error
+<p></p>
+    // Get workspace status
+    GetWorkspaceStatus(name string) (WorkspaceStatus, error)
+}
+<p></p>
+// Local Provider implementation
+type LocalProvider struct {
+    // Local provider configuration
+    Config *LocalProviderConfig
+}
+<p></p>
+// Kubernetes Provider implementation
+type KubernetesProvider struct {
+    // Kubernetes provider configuration
+    Config *KubernetesProviderConfig
+<p></p>
+    // Kubernetes client
+    Client kubernetes.Interface
+}
+<p></p>
+// AWS Provider implementation
+type AWSProvider struct {
+    // AWS provider configuration
+    Config *AWSProviderConfig
+<p></p>
+    // AWS client
+    Client *aws.Client
+}
+</code></pre>
+<p></p>
+<h4>Workspace Agents</h4>
+<p></p>
+The Kled.io Ecosystem uses workspace agents to manage the lifecycle of workspaces. These agents are responsible for:
+<p></p>
+<ul>
+<li>**Workspace Creation**: Creating the workspace environment, including the container image and configuration.</li>
+<ul>
+<li>**Workspace Configuration**: Configuring the workspace with the necessary tools and settings.</li>
+<ul>
+<li>**Workspace Monitoring**: Monitoring the workspace for changes and updates.</li>
+<ul>
+<li>**Workspace Cleanup**: Cleaning up resources when the workspace is deleted.</li>
+<p></p>
+The workspace agent is injected into the workspace during creation and runs as a sidecar container:
+<p></p>
+<pre><code class="language-yaml">
+apiVersion: v1
+kind: Pod
+metadata:
+  name: workspace-pod
+  namespace: workspace-namespace
+spec:
+  containers:
+  - name: workspace
+    image: kled/workspace:latest
+    volumeMounts:
+    - name: workspace-data
+      mountPath: /workspace
+  - name: agent
+    image: kled/workspace-agent:latest
+    volumeMounts:
+    - name: workspace-data
+      mountPath: /workspace
+    - name: docker-socket
+      mountPath: /var/run/docker.sock
+  volumes:
+  - name: workspace-data
+    persistentVolumeClaim:
+      claimName: workspace-data
+  - name: docker-socket
+    hostPath:
+      path: /var/run/docker.sock
+</code></pre>
+<p></p>
+<h4>Monorepo Support</h4>
+<p></p>
+The Kled.io Ecosystem provides advanced support for monorepos, enabling users to manage multiple projects within a single repository:
+<p></p>
+<ul>
+<li>**Dockerized Monorepos**: The workspace technology supports dockerized monorepos, enabling each project to have its own container environment.</li>
+<ul>
+<li>**Project Discovery**: The workspace agent automatically discovers projects within the monorepo and configures them for development.</li>
+<ul>
+<li>**Dependency Management**: The workspace technology manages dependencies between projects, ensuring that changes in one project are reflected in dependent projects.</li>
+<ul>
+<li>**Build Optimization**: The workspace technology optimizes builds for monorepos, only rebuilding projects that have changed.</li>
+<p></p>
+Example monorepo structure:
+<p></p>
+</code></pre>
+monorepo/
+├── project-a/
+│   ├── Dockerfile
+│   ├── package.json
+│   └── src/
+├── project-b/
+│   ├── Dockerfile
+│   ├── package.json
+│   └── src/
+└── project-c/
+    ├── Dockerfile
+    ├── package.json
+    └── src/
+</code></pre>
+<p></p>
+The workspace agent detects the Dockerfiles in each project and creates a container for each one, enabling isolated development environments within the monorepo.
+<p></p>
+<h3>Hashicorp Cloud Platform Integration</h3>
+<p></p>
+The Kled.io Ecosystem includes comprehensive integration with the Hashicorp Cloud Platform (HCP), providing a robust foundation for infrastructure management, security, and automation:
+<p></p>
+<h4>Terraform Integration</h4>
+<p></p>
+The Kled.io Ecosystem integrates with Terraform for infrastructure as code, enabling users to define and provision infrastructure using a declarative configuration language:
+<p></p>
+</code></pre>hcl
+Define a Kled Cluster
+resource "kled_cluster" "example" {
+  name = "example-cluster"
+  size = "medium"
+<p></p>
+  # Configure the control plane
+  control_plane {
+    replicas = 3
+    version  = "1.25.0"
+  }
+<p></p>
+  # Configure node pools
+  node_pool {
+    name     = "default"
+    size     = "medium"
+    replicas = 3
+    version  = "1.25.0"
+  }
+}
+<p></p>
+Define a workspace in the Kled Cluster
+resource "kled_workspace" "example" {
+  name        = "example-workspace"
+  cluster     = kled_cluster.example.name
+  repository  = "https://github.com/user/repo"
+  branch      = "main"
+<p></p>
+  # Configure the workspace
+  config {
+    cpu    = "2"
+    memory = "4Gi"
+    disk   = "20Gi"
+  }
+}
+</code></pre>
+<p></p>
+<h4>Vault Integration</h4>
+<p></p>
+The Kled.io Ecosystem integrates with Vault for secrets management, providing a secure way to store and access sensitive information:
+<p></p>
+</code></pre>go
+// Vault client configuration
+type VaultConfig struct {
+    // Vault address
+    Address string
+<p></p>
+    // Vault token
+    Token string
+<p></p>
+    // Vault namespace
+    Namespace string
+}
+<p></p>
+// Vault client
+type VaultClient struct {
+    // Vault client configuration
+    Config *VaultConfig
+<p></p>
+    // Vault API client
+    Client *vault.Client
+}
+<p></p>
+// Get a secret from Vault
+func (c *VaultClient) GetSecret(path string) (map[string]interface{}, error) {
+    // Get the secret from Vault
+    secret, err := c.Client.Logical().Read(path)
+    if err != nil {
+        return nil, err
+    }
+<p></p>
+    // Return the secret data
+    return secret.Data, nil
+}
+<p></p>
+// Store a secret in Vault
+func (c *VaultClient) StoreSecret(path string, data map[string]interface{}) error {
+    // Store the secret in Vault
+    _, err := c.Client.Logical().Write(path, data)
+    return err
+}
+</code></pre>
+<p></p>
+<h4>Consul Integration</h4>
+<p></p>
+The Kled.io Ecosystem integrates with Consul for service discovery and configuration management, enabling services to discover and connect with each other:
+<p></p>
+</code></pre>go
+// Consul client configuration
+type ConsulConfig struct {
+    // Consul address
+    Address string
+<p></p>
+    // Consul token
+    Token string
+<p></p>
+    // Consul datacenter
+    Datacenter string
+}
+<p></p>
+// Consul client
+type ConsulClient struct {
+    // Consul client configuration
+    Config *ConsulConfig
+<p></p>
+    // Consul API client
+    Client *consul.Client
+}
+<p></p>
+// Register a service with Consul
+func (c *ConsulClient) RegisterService(service *consul.AgentServiceRegistration) error {
+    // Register the service with Consul
+    return c.Client.Agent().ServiceRegister(service)
+}
+<p></p>
+// Deregister a service from Consul
+func (c *ConsulClient) DeregisterService(serviceID string) error {
+    // Deregister the service from Consul
+    return c.Client.Agent().ServiceDeregister(serviceID)
+}
+</code></pre>
+<p></p>
+<h4>Additional Hashicorp Integrations</h4>
+<p></p>
+The Kled.io Ecosystem also integrates with other Hashicorp products:
+<p></p>
+<ul>
+<li>**Waypoint**: For application deployment and lifecycle management.</li>
+<ul>
+<li>**Packer**: For building machine images for multiple platforms.</li>
+<ul>
+<li>**Vagrant**: For development environment management.</li>
+<ul>
+<li>**Vault Radar**: For secrets detection and management.</li>
+<ul>
+<li>**Vault Secrets**: For secrets management and rotation.</li>
+<ul>
+<li>**Vault Dedicated**: For dedicated Vault instances.</li>
+<p></p>
+These integrations provide a comprehensive platform for infrastructure management, security, and automation, enabling enterprises to build and deploy applications with confidence.
+<p></p>
+<h3>Kledspace and kPolicy</h3>
+<p></p>
+The Kled.io Ecosystem includes two key components for development and policy management:
+<p></p>
+<h4>Kledspace</h4>
+<p></p>
+Kledspace is a powerful development environment for Kubernetes, enabling developers to build, test, and debug applications directly in Kubernetes:
+<p></p>
+<pre><code class="language-yaml">
+Kledspace configuration
+version: v1
+name: my-app
+<p></p>
+Development container configuration
+dev:
+  # Container image
+  image: kled/dev:latest
+<p></p>
+  # Port forwarding
+  ports:
+    - 8080:8080
+    - 9229:9229
+<p></p>
+  # File synchronization
+  sync:
+    - src: ./src
+      dest: /app/src
+    - src: ./package.json
+      dest: /app/package.json
+<p></p>
+  # Commands
+  commands:
+    - name: dev
+      command: npm run dev
+    - name: test
+      command: npm test
+    - name: build
+      command: npm run build
+</code></pre>
+<p></p>
+Kledspace provides several key features:
+<p></p>
+<ul>
+<li>**Hot Reloading**: Changes to the source code are automatically synchronized to the container and the application is reloaded.</li>
+<ul>
+<li>**Debugging**: Integrated debugging support for various languages and frameworks.</li>
+<ul>
+<li>**Port Forwarding**: Automatic port forwarding from the container to the local machine.</li>
+<ul>
+<li>**Resource Management**: Efficient management of container resources to optimize development.</li>
+<p></p>
+<h4>kPolicy</h4>
+<p></p>
+kPolicy is a policy management system for Kubernetes, enabling administrators to define and enforce policies across clusters:
+<p></p>
+<pre><code class="language-yaml">
+kPolicy configuration
+apiVersion: policy.kled.io/v1
+kind: Policy
+metadata:
+  name: resource-limits
+spec:
+  # Policy rules
+  rules:
+    - name: container-limits
+      match:
+        kinds:
+          - Pod
+      validate:
+        message: "Container must have resource limits"
+        pattern:
+          spec:
+            containers:
+              - resources:
+                  limits:
+                    memory: "?*"
+                    cpu: "?*"
+</code></pre>
+<p></p>
+kPolicy provides several key features:
+<p></p>
+<ul>
+<li>**Policy Enforcement**: Enforce policies across clusters to ensure compliance with security and operational requirements.</li>
+<ul>
+<li>**Policy Validation**: Validate resources against policies before they are created or updated.</li>
+<ul>
+<li>**Policy Reporting**: Generate reports on policy compliance and violations.</li>
+<ul>
+<li>**Policy Templates**: Reusable policy templates for common requirements.</li>
+<p></p>
+<h2>Benefits</h2>
+<p></p>
+<h3>Resource Efficiency</h3>
+<p></p>
+The Kled Cluster Integration enables efficient resource utilization by allowing multiple Kled Clusters to share the same underlying infrastructure:
+<p></p>
+<ul>
+<li>**Shared Worker Nodes**: Kled Clusters share the same worker nodes, eliminating the need for dedicated nodes for each cluster.</li>
+<ul>
+<li>**Optimized Resource Allocation**: Resources can be allocated dynamically based on workload requirements, ensuring optimal utilization.</li>
+<ul>
+<li>**Reduced Management Overhead**: A single host cluster can manage multiple Kled Clusters, reducing operational complexity and cost.</li>
+<p></p>
+<h3>Isolation and Security</h3>
+<p></p>
+The Kled Cluster Integration provides strong isolation between different workloads, ensuring that each application has its own secure environment:
+<p></p>
+<ul>
+<li>**Namespace Isolation**: Each Kled Cluster has its own set of namespaces, preventing resource conflicts and ensuring isolation.</li>
+<ul>
+<li>**API Server Isolation**: Each Kled Cluster has its own API server, providing control plane isolation and preventing unauthorized access.</li>
+<ul>
+<li>**Resource Quotas**: Resource quotas can be applied at the Kled Cluster level, preventing resource exhaustion and ensuring fair allocation.</li>
+<p></p>
+<h3>Scalability</h3>
+<p></p>
+The Kled Cluster Integration enables seamless scaling of AI/ML workloads, allowing enterprises to adapt to changing requirements:
+<p></p>
+<ul>
+<li>**Horizontal Scaling**: Additional Kled Clusters can be created as needed to accommodate growing workloads.</li>
+<ul>
+<li>**Vertical Scaling**: Resources can be added to existing Kled Clusters to handle increased demand.</li>
+<ul>
+<li>**Auto-Scaling**: Kled Clusters can be configured to scale automatically based on workload metrics, ensuring optimal performance.</li>
+<p></p>
+<h2>Use Cases</h2>
+<p></p>
+<h3>Development Environments</h3>
+<p></p>
+The Kled Cluster Integration provides isolated development environments for teams working on different projects:
+<p></p>
+<pre><code class="language-bash">
+Create a development Kled Cluster
+kled cluster create dev-cluster --size small
+<p></p>
+Create a workspace for a project
+kled workspace create project-a --repo https://github.com/org/project-a --cluster dev-cluster
+<p></p>
+Deploy supporting services
+kled service deploy redis --cluster dev-cluster
+kled service deploy postgres --cluster dev-cluster
+</code></pre>
+<p></p>
+<h3>Testing Environments</h3>
+<p></p>
+The Kled Cluster Integration provides isolated testing environments for validating applications before deployment:
+<p></p>
+<pre><code class="language-bash">
+Create a testing Kled Cluster
+kled cluster create test-cluster --size medium
+<p></p>
+Create a workspace for testing
+kled workspace create test-workspace --repo https://github.com/org/project --cluster test-cluster
+<p></p>
+Run tests
+kled workspace exec test-workspace -- npm test
+</code></pre>
+<p></p>
+<h3>Production Environments</h3>
+<p></p>
+The Kled Cluster Integration provides secure and scalable production environments for running AI/ML workloads:
+<p></p>
+<pre><code class="language-bash">
+Create a production Kled Cluster
+kled cluster create prod-cluster --size large
+<p></p>
+Deploy the application
+kled app deploy --repo https://github.com/org/app --cluster prod-cluster
+<p></p>
+Scale the application
+kled app scale app-name --replicas 3 --cluster prod-cluster
+</code></pre>
+<p></p>
+<h2>Conclusion</h2>
+<p></p>
+The Kled Cluster Integration is a fundamental component of the Kled.io Ecosystem, providing a secure and efficient environment for running AI/ML workloads. By leveraging Kled Clusters, the Kled.io Ecosystem enables enterprises to maximize the value of their infrastructure investments while ensuring the security and performance of their AI/ML applications.
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Kled.io. All rights reserved.</p>
+    </footer>
+</body>
+</html>

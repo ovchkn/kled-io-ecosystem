@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLI Architecture - Kled.io Ecosystem Documentation</title>
+    <link rel="stylesheet" href="/css/custom.css">
+    <style>
+        :root {
+            --primary-color: #0066cc;
+            --secondary-color: #4CAF50;
+            --accent-color: #FF5722;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --border-color: #ddd;
+            --sidebar-width: 280px;
+            --header-height: 60px;
+            --content-max-width: 1200px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0 20px;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .main-container {
+            display: flex;
+            margin-top: var(--header-height);
+            flex: 1;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--light-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            position: fixed;
+            top: var(--header-height);
+            bottom: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: var(--text-color);
+            display: block;
+            padding: 5px 0;
+            transition: color 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: var(--primary-color);
+        }
+
+        .content {
+            flex: 1;
+            padding: 30px;
+            margin-left: var(--sidebar-width);
+            max-width: calc(var(--content-max-width) - var(--sidebar-width));
+        }
+
+        .content h1 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .content p {
+            margin-bottom: 15px;
+        }
+
+        .content ul, .content ol {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+
+        .content a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .content a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: var(--light-bg);
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .content {
+                margin-left: 0;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kled.io Ecosystem Documentation</h1>
+    </header>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <h2>Documentation</h2>
+            <ul>
+                <li><a href="/docs/overview/index.html">Overview</a></li>
+                <li>
+                    <h3>Architecture</h3>
+                    <ul>
+                        <li><a href="/docs/architecture/index.html">Architecture Overview</a></li>
+                        <li><a href="/docs/architecture/workspace-technology.html">Workspace Technology</a></li>
+                        <li><a href="/docs/architecture/kled-cluster.html">Kled Cluster</a></li>
+                        <li><a href="/docs/architecture/pure-rust-communication.html">Pure Rust Communication</a></li>
+                        <li><a href="/docs/architecture/flutter-ui.html">Flutter UI</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <h3>Technical Components</h3>
+                    <ul>
+                        <li><a href="/docs/technical-components/index.html">Components Overview</a></li>
+                        <li><a href="/docs/technical-components/cli.html">CLI</a></li>
+                        <li><a href="/docs/technical-components/gateway.html">Gateway</a></li>
+                        <li><a href="/docs/technical-components/kledspace.html">Kledspace</a></li>
+                        <li><a href="/docs/technical-components/kpolicy.html">kPolicy</a></li>
+                        <li><a href="/docs/technical-components/kled-cluster-integration.html">Kled Cluster Integration</a></li>
+                        <li><a href="/docs/technical-components/virtual-cluster-integration.html">Virtual Cluster Integration</a></li>
+                        <li><a href="/docs/technical-components/rust-flutter-bridge.html">Rust-Flutter Bridge</a></li>
+                    </ul>
+                </li>
+                <li><a href="/docs/enterprise-ai-ml/index.html">Enterprise AI/ML</a></li>
+                <li><a href="/docs/roadmap/index.html">Roadmap</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+<p></p>
+<h2>Overview</h2>
+<p></p>
+The Kled.io CLI provides a powerful interface for managing workspaces, virtual clusters, and development environments. Built with Go and Cobra, the CLI offers a comprehensive set of commands for interacting with the Kled.io Ecosystem.
+<p></p>
+<h2>Architecture</h2>
+<p></p>
+<pre><code class="language-mermaid">
+graph TD
+    A[CLI Command] --> B[CLI Bridge]
+    B --> C[Rust Backend]
+    C --> D[Virtual Cluster]
+    C --> E[Workspace Manager]
+    C --> F[Configuration Manager]
+<p></p>
+    subgraph "User Interface"
+    A
+    end
+<p></p>
+    subgraph "Integration Layer"
+    B
+    end
+<p></p>
+    subgraph "Backend Services"
+    C
+    D
+    E
+    F
+    end
+</code></pre>
+<p></p>
+The CLI architecture is designed to provide a seamless interface between the user and the Kled.io Ecosystem. The CLI commands are processed by the CLI Bridge, which communicates with the Rust backend to execute the requested operations.
+<p></p>
+<h2>Command Structure</h2>
+<p></p>
+The Kled.io CLI follows a hierarchical command structure, with top-level commands representing major functionality areas and subcommands providing specific operations:
+<p></p>
+</code></pre>
+kled
+├── workspace
+│   ├── create
+│   ├── list
+│   ├── delete
+│   ├── start
+│   ├── stop
+│   └── exec
+├── cluster
+│   ├── create
+│   ├── list
+│   ├── delete
+│   ├── start
+│   ├── stop
+│   └── info
+├── config
+│   ├── set
+│   ├── get
+│   ├── list
+│   └── import
+└── version
+</code></pre>
+<p></p>
+<h2>Key Components</h2>
+<p></p>
+<h3>Command Definitions</h3>
+<p></p>
+The CLI commands are defined using Cobra, a powerful library for creating modern CLI applications:
+<p></p>
+</code></pre>go
+package cmd
+<p></p>
+import (
+	"fmt"
+	"os"
+<p></p>
+	"github.com/spf13/cobra"
+)
+<p></p>
+var rootCmd = &cobra.Command{
+	Use:   "kled",
+	Short: "Kled.io CLI",
+	Long:  `Kled.io CLI provides a command-line interface for managing the Kled.io Ecosystem.`,
+}
+<p></p>
+func Execute() {
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+}
+<p></p>
+func init() {
+	rootCmd.AddCommand(workspaceCmd)
+	rootCmd.AddCommand(clusterCmd)
+	rootCmd.AddCommand(configCmd)
+	rootCmd.AddCommand(versionCmd)
+}
+</code></pre>
+<p></p>
+<h3>Workspace Commands</h3>
+<p></p>
+The workspace commands enable users to create, manage, and interact with development workspaces:
+<p></p>
+</code></pre>go
+var workspaceCmd = &cobra.Command{
+	Use:   "workspace",
+	Short: "Manage workspaces",
+	Long:  `Manage development workspaces in the Kled.io Ecosystem.`,
+}
+<p></p>
+var workspaceCreateCmd = &cobra.Command{
+	Use:   "create [name]",
+	Short: "Create a new workspace",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		name := args[0]
+<p></p>
+		// Get flags
+		repo, _ := cmd.Flags().GetString("repo")
+		cluster, _ := cmd.Flags().GetString("cluster")
+<p></p>
+		// Create the workspace
+		err := client.CreateWorkspace(name, repo, cluster)
+		if err != nil {
+			return err
+		}
+<p></p>
+		fmt.Printf("Workspace %s created successfully\n", name)
+		return nil
+	},
+}
+<p></p>
+func init() {
+	workspaceCmd.AddCommand(workspaceCreateCmd)
+	workspaceCmd.AddCommand(workspaceListCmd)
+	workspaceCmd.AddCommand(workspaceDeleteCmd)
+	workspaceCmd.AddCommand(workspaceStartCmd)
+	workspaceCmd.AddCommand(workspaceStopCmd)
+	workspaceCmd.AddCommand(workspaceExecCmd)
+<p></p>
+	workspaceCreateCmd.Flags().String("repo", "", "Repository URL")
+	workspaceCreateCmd.Flags().String("cluster", "", "Virtual cluster name")
+}
+</code></pre>
+<p></p>
+<h3>Cluster Commands</h3>
+<p></p>
+The cluster commands enable users to create, manage, and interact with virtual clusters:
+<p></p>
+</code></pre>go
+var clusterCmd = &cobra.Command{
+	Use:   "cluster",
+	Short: "Manage virtual clusters",
+	Long:  `Manage virtual clusters in the Kled.io Ecosystem.`,
+}
+<p></p>
+var clusterCreateCmd = &cobra.Command{
+	Use:   "create [name]",
+	Short: "Create a new virtual cluster",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		name := args[0]
+<p></p>
+		// Get flags
+		size, _ := cmd.Flags().GetString("size")
+<p></p>
+		// Create the virtual cluster
+		err := client.CreateVirtualCluster(name, size)
+		if err != nil {
+			return err
+		}
+<p></p>
+		fmt.Printf("Virtual cluster %s created successfully\n", name)
+		return nil
+	},
+}
+<p></p>
+func init() {
+	clusterCmd.AddCommand(clusterCreateCmd)
+	clusterCmd.AddCommand(clusterListCmd)
+	clusterCmd.AddCommand(clusterDeleteCmd)
+	clusterCmd.AddCommand(clusterStartCmd)
+	clusterCmd.AddCommand(clusterStopCmd)
+	clusterCmd.AddCommand(clusterInfoCmd)
+<p></p>
+	clusterCreateCmd.Flags().String("size", "small", "Cluster size (small, medium, large)")
+}
+</code></pre>
+<p></p>
+<h3>Configuration Commands</h3>
+<p></p>
+The configuration commands enable users to manage their Kled.io configuration:
+<p></p>
+</code></pre>go
+var configCmd = &cobra.Command{
+	Use:   "config",
+	Short: "Manage configuration",
+	Long:  `Manage Kled.io configuration settings.`,
+}
+<p></p>
+var configSetCmd = &cobra.Command{
+	Use:   "set [key] [value]",
+	Short: "Set a configuration value",
+	Args:  cobra.ExactArgs(2),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		key := args[0]
+		value := args[1]
+<p></p>
+		// Set the configuration value
+		err := client.SetConfig(key, value)
+		if err != nil {
+			return err
+		}
+<p></p>
+		fmt.Printf("Configuration %s set to %s\n", key, value)
+		return nil
+	},
+}
+<p></p>
+func init() {
+	configCmd.AddCommand(configSetCmd)
+	configCmd.AddCommand(configGetCmd)
+	configCmd.AddCommand(configListCmd)
+	configCmd.AddCommand(configImportCmd)
+}
+</code></pre>
+<p></p>
+<h2>CLI Bridge</h2>
+<p></p>
+The CLI Bridge provides a seamless interface between the Go-based CLI and the Rust backend, enabling efficient command execution and data exchange:
+<p></p>
+</code></pre>rust
+pub struct CliBridge {
+    /// CLI configuration
+    config: CliConfig,
+}
+<p></p>
+impl CliBridge {
+    /// Create a new CLI bridge
+    pub fn new(config: CliConfig) -> Self {
+        Self { config }
+    }
+<p></p>
+    /// Initialize the CLI bridge
+    pub async fn init(&self) -> Result<()> {
+        // Initialize observability
+        init_observability(self.config.observability.clone())
+            .context("Failed to initialize observability")?;
+<p></p>
+        info!("Initializing Kled.io CLI bridge");
+<p></p>
+        Ok(())
+    }
+<p></p>
+    /// Run the CLI bridge
+    pub async fn run(&self) -> Result<()> {
+        // Create the router
+        let app = Router::new()
+            .route("/", get(|| async { "Kled.io CLI Bridge" }))
+            .route("/health", get(|| async { "OK" }))
+            .route("/workspace/create", post(create_workspace))
+            .route("/workspace/list", get(list_workspaces))
+            .route("/workspace/delete", post(delete_workspace))
+            .route("/cluster/create", post(create_cluster))
+            .route("/cluster/list", get(list_clusters))
+            .route("/cluster/delete", post(delete_cluster))
+            .route("/config/set", post(set_config))
+            .route("/config/get", get(get_config))
+            .route("/config/list", get(list_config));
+<p></p>
+        // Start the HTTP server
+        let http_addr = self.config.http_addr;
+        info!("Starting HTTP server on {}", http_addr);
+<p></p>
+        let http_server = axum::Server::bind(&http_addr)
+            .serve(app.clone().into_make_service());
+<p></p>
+        http_server.await.context("HTTP server error")?;
+<p></p>
+        Ok(())
+    }
+}
+<p></p>
+/// Create a workspace
+async fn create_workspace(
+    Json(payload): Json<CreateWorkspaceRequest>,
+) -> Result<Json<CreateWorkspaceResponse>, StatusCode> {
+    // Create the workspace
+    let workspace = Workspace::create(payload.name, payload.repo, payload.cluster)
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+<p></p>
+    // Return the response
+    Ok(Json(CreateWorkspaceResponse {
+        id: workspace.id,
+        name: workspace.name,
+        status: workspace.status,
+    }))
+}
+</code></pre>
+<p></p>
+<h2>Usage Examples</h2>
+<p></p>
+<h3>Creating a Workspace</h3>
+<p></p>
+<pre><code class="language-bash">
+Create a workspace from a Git repository
+kled workspace create my-workspace --repo https://github.com/user/repo --cluster my-cluster
+<p></p>
+Create a workspace from a local directory
+kled workspace create my-workspace --local ./path/to/directory --cluster my-cluster
+<p></p>
+Create a workspace with a specific image
+kled workspace create my-workspace --image kled/workspace:latest --cluster my-cluster
+</code></pre>
+<p></p>
+<h3>Managing Virtual Clusters</h3>
+<p></p>
+<pre><code class="language-bash">
+Create a virtual cluster
+kled cluster create my-cluster --size medium
+<p></p>
+List virtual clusters
+kled cluster list
+<p></p>
+Get information about a virtual cluster
+kled cluster info my-cluster
+<p></p>
+Delete a virtual cluster
+kled cluster delete my-cluster
+</code></pre>
+<p></p>
+<h3>Managing Configuration</h3>
+<p></p>
+<pre><code class="language-bash">
+Set a configuration value
+kled config set registry.url https://registry.kled.io
+<p></p>
+Get a configuration value
+kled config get registry.url
+<p></p>
+List all configuration values
+kled config list
+<p></p>
+Import configuration from a file
+kled config import config.yaml
+</code></pre>
+<p></p>
+<h2>Conclusion</h2>
+<p></p>
+The Kled.io CLI provides a powerful and flexible interface for interacting with the Kled.io Ecosystem. By leveraging Go and Cobra for the command-line interface and integrating with the Rust backend through the CLI Bridge, the CLI enables users to manage workspaces, virtual clusters, and configuration with ease.
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Kled.io. All rights reserved.</p>
+    </footer>
+</body>
+</html>

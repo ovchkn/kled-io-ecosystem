@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Components - Kled.io Ecosystem Documentation</title>
+    <link rel="stylesheet" href="/css/custom.css">
+    <style>
+        :root {
+            --primary-color: #0066cc;
+            --secondary-color: #4CAF50;
+            --accent-color: #FF5722;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --border-color: #ddd;
+            --sidebar-width: 280px;
+            --header-height: 60px;
+            --content-max-width: 1200px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0 20px;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .main-container {
+            display: flex;
+            margin-top: var(--header-height);
+            flex: 1;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--light-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            position: fixed;
+            top: var(--header-height);
+            bottom: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: var(--text-color);
+            display: block;
+            padding: 5px 0;
+            transition: color 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: var(--primary-color);
+        }
+
+        .content {
+            flex: 1;
+            padding: 30px;
+            margin-left: var(--sidebar-width);
+            max-width: calc(var(--content-max-width) - var(--sidebar-width));
+        }
+
+        .content h1 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .content p {
+            margin-bottom: 15px;
+        }
+
+        .content ul, .content ol {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+
+        .content a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .content a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: var(--light-bg);
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .content {
+                margin-left: 0;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kled.io Ecosystem Documentation</h1>
+    </header>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <h2>Documentation</h2>
+            <ul>
+                <li><a href="/docs/overview/index.html">Overview</a></li>
+                <li>
+                    <h3>Architecture</h3>
+                    <ul>
+                        <li><a href="/docs/architecture/index.html">Architecture Overview</a></li>
+                        <li><a href="/docs/architecture/workspace-technology.html">Workspace Technology</a></li>
+                        <li><a href="/docs/architecture/kled-cluster.html">Kled Cluster</a></li>
+                        <li><a href="/docs/architecture/pure-rust-communication.html">Pure Rust Communication</a></li>
+                        <li><a href="/docs/architecture/flutter-ui.html">Flutter UI</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <h3>Technical Components</h3>
+                    <ul>
+                        <li><a href="/docs/technical-components/index.html">Components Overview</a></li>
+                        <li><a href="/docs/technical-components/cli.html">CLI</a></li>
+                        <li><a href="/docs/technical-components/gateway.html">Gateway</a></li>
+                        <li><a href="/docs/technical-components/kledspace.html">Kledspace</a></li>
+                        <li><a href="/docs/technical-components/kpolicy.html">kPolicy</a></li>
+                        <li><a href="/docs/technical-components/kled-cluster-integration.html">Kled Cluster Integration</a></li>
+                        <li><a href="/docs/technical-components/virtual-cluster-integration.html">Virtual Cluster Integration</a></li>
+                        <li><a href="/docs/technical-components/rust-flutter-bridge.html">Rust-Flutter Bridge</a></li>
+                    </ul>
+                </li>
+                <li><a href="/docs/enterprise-ai-ml/index.html">Enterprise AI/ML</a></li>
+                <li><a href="/docs/roadmap/index.html">Roadmap</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+<p></p>
+The Kled.io Ecosystem is built on a set of powerful technical components that work together to provide a comprehensive platform for AI/ML deployment and development environment management. This section provides detailed information about each of these components.
+<p></p>
+<h2>Component Overview</h2>
+<p></p>
+<pre><code class="language-mermaid">
+graph TD
+    A[CLI] --> B[Gateway System]
+    B --> C[Rust Backend]
+    C --> D[Kled Cluster Integration]
+    A --> E[Rust-to-Flutter Bridge]
+    E --> F[Flutter UI]
+    C --> G[Hashicorp Cloud Platform]
+    C --> H[Workspace Technology]
+<p></p>
+    subgraph "User Interface"
+    A
+    F
+    end
+<p></p>
+    subgraph "Communication Layer"
+    B
+    E
+    end
+<p></p>
+    subgraph "Backend Services"
+    C
+    end
+<p></p>
+    subgraph "Infrastructure"
+    D
+    G
+    H
+    end
+</code></pre>
+<p></p>
+The Kled.io Ecosystem is composed of several key technical components, each with its own responsibilities and features. These components work together to provide a seamless experience for users, from the command-line interface to the Kled Cluster infrastructure.
+<p></p>
+<h2>Key Components</h2>
+<p></p>
+<h3>[CLI Architecture](./cli.md)</h3>
+<p></p>
+The CLI provides a powerful interface for managing workspaces, Kled Clusters, and development environments. Built with Go and Cobra, the CLI offers a comprehensive set of commands for interacting with the Kled.io Ecosystem.
+<p></p>
+Key features:
+<ul>
+<li>Hierarchical command structure for intuitive usage</li>
+<ul>
+<li>Comprehensive set of commands for managing workspaces and Kled Clusters</li>
+<ul>
+<li>Seamless integration with the Rust backend through the CLI Bridge</li>
+<p></p>
+[Learn more about the CLI Architecture](./cli.md)
+<p></p>
+<h3>[Gateway System](./gateway.md)</h3>
+<p></p>
+The Gateway System provides a centralized point for managing communication between different parts of the system. Built on Aclix Web Servers and leveraging the pure Rust communication layer, the Gateway System enables seamless integration between the frontend and backend components.
+<p></p>
+Key features:
+<ul>
+<li>HTTP Server for RESTful API access</li>
+<ul>
+<li>Unix Domain Socket for high-performance local communication</li>
+<ul>
+<li>Flexible configuration options for different deployment scenarios</li>
+<p></p>
+[Learn more about the Gateway System](./gateway.md)
+<p></p>
+<h3>[Rust-to-Flutter Bridge](./rust-flutter-bridge.md)</h3>
+<p></p>
+The Rust-to-Flutter Bridge enables seamless integration between the Rust backend and Flutter frontend. This bridge allows for efficient data exchange and function calls between the two environments, providing the performance and security benefits of Rust with the cross-platform UI capabilities of Flutter.
+<p></p>
+Key features:
+<ul>
+<li>Code generation for type-safe communication</li>
+<ul>
+<li>Efficient data serialization between Rust and Dart</li>
+<ul>
+<li>Comprehensive error handling</li>
+<p></p>
+[Learn more about the Rust-to-Flutter Bridge](./rust-flutter-bridge.md)
+<p></p>
+<h3>[Kled Cluster Integration](./kled-cluster-integration.md)</h3>
+<p></p>
+The Kled Cluster Integration provides a secure and efficient environment for running AI/ML workloads. Kled Clusters are fully operable Kubernetes clusters running inside Physical Clusters, enabling enterprises to maximize the value of their infrastructure investments while ensuring the security and performance of their AI/ML applications.
+<p></p>
+Key features:
+<ul>
+<li>Resource efficiency through shared infrastructure</li>
+<ul>
+<li>Strong isolation between workloads</li>
+<ul>
+<li>Seamless scaling for changing requirements</li>
+<ul>
+<li>Advanced user management and administration</li>
+<ul>
+<li>Support for both external and internal clustering</li>
+<p></p>
+[Learn more about the Kled Cluster Integration](./kled-cluster-integration.md)
+<p></p>
+<h3>[Workspace Technology](../architecture/workspace-technology.md)</h3>
+<p></p>
+The Kled.io Ecosystem features an advanced workspace technology that provides a comprehensive environment for development and deployment. This technology is built on DevPod and Daytona, with a proprietary preload for loading Kled into workspaces, creating a powerful and flexible development environment.
+<p></p>
+Key features:
+<ul>
+<li>Custom preload image with full language support and sudoless environment</li>
+<ul>
+<li>Support for dockerized monorepos with automatic project discovery</li>
+<ul>
+<li>Multiple workspace providers for different environments</li>
+<ul>
+<li>Workspace agents for lifecycle management</li>
+<ul>
+<li>Linux-like environment with Docker and Kubernetes support</li>
+<p></p>
+[Learn more about the Workspace Technology](../architecture/workspace-technology.md)
+<p></p>
+<h3>[Kledspace](./kledspace.md)</h3>
+<p></p>
+Kledspace is a powerful development environment for Kubernetes, enabling developers to build, test, and debug applications directly in Kubernetes. Based on the Devspace technology, Kledspace provides a seamless development experience for Kubernetes applications, making it easy to develop and deploy applications to Kubernetes clusters.
+<p></p>
+Key features:
+<ul>
+<li>Development containers running in Kubernetes</li>
+<ul>
+<li>File synchronization between local machine and container</li>
+<ul>
+<li>Port forwarding for accessing services</li>
+<ul>
+<li>Hot reloading for rapid development</li>
+<ul>
+<li>Comprehensive debugging capabilities</li>
+<ul>
+<li>Seamless integration with Kled Clusters</li>
+<p></p>
+[Learn more about Kledspace](./kledspace.md)
+<p></p>
+<h3>[kPolicy](./kpolicy.md)</h3>
+<p></p>
+kPolicy is a powerful policy management system for Kubernetes, enabling administrators to define and enforce policies across clusters using JavaScript. Based on the jspolicy technology, kPolicy provides a flexible and intuitive way to implement policies, ensuring that Kubernetes resources comply with organizational standards and best practices.
+<p></p>
+Key features:
+<ul>
+<li>JavaScript-based policies for familiar syntax and powerful capabilities</li>
+<ul>
+<li>Policy validation to ensure compliance before resource creation</li>
+<ul>
+<li>Policy enforcement to maintain compliance throughout resource lifecycle</li>
+<ul>
+<li>Policy reporting to monitor compliance across clusters</li>
+<ul>
+<li>Policy templates for common use cases</li>
+<ul>
+<li>Seamless integration with Kled Clusters</li>
+<p></p>
+[Learn more about kPolicy](./kpolicy.md)
+<p></p>
+<h3>Hashicorp Cloud Platform Integration</h3>
+<p></p>
+The Kled.io Ecosystem includes comprehensive integration with the Hashicorp Cloud Platform (HCP), providing a robust foundation for infrastructure management, security, and automation:
+<p></p>
+Key features:
+<ul>
+<li>Terraform integration for infrastructure as code</li>
+<ul>
+<li>Vault integration for secrets management</li>
+<ul>
+<li>Consul integration for service discovery and configuration</li>
+<ul>
+<li>Waypoint integration for application deployment</li>
+<ul>
+<li>Packer integration for machine image building</li>
+<ul>
+<li>Vagrant integration for development environments</li>
+<ul>
+<li>Vault Radar, Vault Secrets, and Vault Dedicated support</li>
+<p></p>
+[Learn more about the Hashicorp Cloud Platform Integration](./kled-cluster-integration.md#hashicorp-cloud-platform-integration)
+<p></p>
+<h2>Component Interactions</h2>
+<p></p>
+The Kled.io Ecosystem components interact with each other to provide a seamless experience for users. Here's how the components work together:
+<p></p>
+<h3>CLI to Gateway Interaction</h3>
+<p></p>
+The CLI communicates with the Gateway System to execute commands and retrieve information:
+<p></p>
+<pre><code class="language-mermaid">
+sequenceDiagram
+    participant User
+    participant CLI
+    participant Gateway
+    participant Backend
+<p></p>
+    User->>CLI: Execute command
+    CLI->>Gateway: Send request
+    Gateway->>Backend: Process request
+    Backend->>Gateway: Return result
+    Gateway->>CLI: Return response
+    CLI->>User: Display result
+</code></pre>
+<p></p>
+<h3>Frontend to Backend Interaction</h3>
+<p></p>
+The Flutter UI communicates with the Rust backend through the Rust-to-Flutter Bridge:
+<p></p>
+<pre><code class="language-mermaid">
+sequenceDiagram
+    participant User
+    participant Flutter
+    participant Bridge
+    participant Rust
+    participant Backend
+<p></p>
+    User->>Flutter: Interact with UI
+    Flutter->>Bridge: Call Rust function
+    Bridge->>Rust: Execute function
+    Rust->>Backend: Process request
+    Backend->>Rust: Return result
+    Rust->>Bridge: Return result
+    Bridge->>Flutter: Return response
+    Flutter->>User: Update UI
+</code></pre>
+<p></p>
+<h3>Backend to Infrastructure Interaction</h3>
+<p></p>
+The Rust backend communicates with the Kled Cluster infrastructure to manage workspaces and services:
+<p></p>
+<pre><code class="language-mermaid">
+sequenceDiagram
+    participant Backend
+    participant Controller
+    participant KledCluster
+    participant Workspace
+    participant HCP
+<p></p>
+    Backend->>Controller: Create Kled Cluster
+    Controller->>KledCluster: Initialize cluster
+    KledCluster->>Controller: Cluster created
+    Controller->>Backend: Return result
+<p></p>
+    Backend->>KledCluster: Create workspace
+    KledCluster->>Workspace: Initialize workspace
+    Workspace->>KledCluster: Workspace created
+    KledCluster->>Backend: Return result
+<p></p>
+    Backend->>HCP: Manage infrastructure
+    HCP->>Backend: Return result
+</code></pre>
+<p></p>
+<h2>Development Workflow</h2>
+<p></p>
+The Kled.io Ecosystem components support a comprehensive development workflow:
+<p></p>
+<pre><code class="language-mermaid">
+graph LR
+    A[Development] --> B[Testing]
+    B --> C[Deployment]
+    C --> D[Monitoring]
+    D --> E[Scaling]
+    E --> F[Updates]
+    F --> A
+<p></p>
+    subgraph "Development Phase"
+    A
+    end
+<p></p>
+    subgraph "Testing Phase"
+    B
+    end
+<p></p>
+    subgraph "Operations Phase"
+    C
+    D
+    E
+    F
+    end
+</code></pre>
+<p></p>
+1. **Development**: Developers create workspaces using the CLI or Flutter UI, which communicates with the Gateway System to create the necessary resources in the Kled Cluster.
+<p></p>
+2. **Testing**: Developers test their applications in the Kled Cluster, using the CLI or Flutter UI to manage the testing process.
+<p></p>
+3. **Deployment**: Applications are deployed to production Kled Clusters, using the CLI or Flutter UI to manage the deployment process.
+<p></p>
+4. **Monitoring**: The Kled.io Ecosystem provides monitoring capabilities for deployed applications, allowing users to track performance and health.
+<p></p>
+5. **Scaling**: Applications can be scaled up or down based on demand, using the CLI or Flutter UI to manage the scaling process.
+<p></p>
+6. **Updates**: Applications can be updated with new versions, using the CLI or Flutter UI to manage the update process.
+<p></p>
+<h2>GitOps Integration</h2>
+<p></p>
+The Kled.io Ecosystem includes comprehensive support for GitOps workflows, enabling continuous delivery through Git operations:
+<p></p>
+<pre><code class="language-mermaid">
+graph TD
+    A[Git Repository] --> B[CI/CD Pipeline]
+    B --> C[Kled Cluster]
+    C --> D[Applications]
+<p></p>
+    subgraph "Source Control"
+    A
+    end
+<p></p>
+    subgraph "Automation"
+    B
+    end
+<p></p>
+    subgraph "Infrastructure"
+    C
+    end
+<p></p>
+    subgraph "Workloads"
+    D
+    end
+</code></pre>
+<p></p>
+Key features:
+<ul>
+<li>Declarative infrastructure as code with Terraform</li>
+<ul>
+<li>Automated deployment pipelines with Waypoint</li>
+<ul>
+<li>Configuration management with Consul</li>
+<ul>
+<li>Secrets management with Vault</li>
+<ul>
+<li>Policy enforcement with kPolicy</li>
+<p></p>
+<h2>Conclusion</h2>
+<p></p>
+The Kled.io Ecosystem technical components work together to provide a comprehensive platform for AI/ML deployment and development environment management. By leveraging the strengths of each component, the Kled.io Ecosystem enables enterprises to develop, deploy, and manage AI/ML applications with unprecedented efficiency, security, and scalability.
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Kled.io. All rights reserved.</p>
+    </footer>
+</body>
+</html>

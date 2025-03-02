@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flutter UI Ecosystem - Kled.io Ecosystem Documentation</title>
+    <link rel="stylesheet" href="/css/custom.css">
+    <style>
+        :root {
+            --primary-color: #0066cc;
+            --secondary-color: #4CAF50;
+            --accent-color: #FF5722;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --border-color: #ddd;
+            --sidebar-width: 280px;
+            --header-height: 60px;
+            --content-max-width: 1200px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0 20px;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .main-container {
+            display: flex;
+            margin-top: var(--header-height);
+            flex: 1;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--light-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            position: fixed;
+            top: var(--header-height);
+            bottom: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: var(--text-color);
+            display: block;
+            padding: 5px 0;
+            transition: color 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: var(--primary-color);
+        }
+
+        .content {
+            flex: 1;
+            padding: 30px;
+            margin-left: var(--sidebar-width);
+            max-width: calc(var(--content-max-width) - var(--sidebar-width));
+        }
+
+        .content h1 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .content p {
+            margin-bottom: 15px;
+        }
+
+        .content ul, .content ol {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+
+        .content a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .content a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: var(--light-bg);
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .content {
+                margin-left: 0;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kled.io Ecosystem Documentation</h1>
+    </header>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <h2>Documentation</h2>
+            <ul>
+                <li><a href="/docs/overview/index.html">Overview</a></li>
+                <li>
+                    <h3>Architecture</h3>
+                    <ul>
+                        <li><a href="/docs/architecture/index.html">Architecture Overview</a></li>
+                        <li><a href="/docs/architecture/workspace-technology.html">Workspace Technology</a></li>
+                        <li><a href="/docs/architecture/kled-cluster.html">Kled Cluster</a></li>
+                        <li><a href="/docs/architecture/pure-rust-communication.html">Pure Rust Communication</a></li>
+                        <li><a href="/docs/architecture/flutter-ui.html">Flutter UI</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <h3>Technical Components</h3>
+                    <ul>
+                        <li><a href="/docs/technical-components/index.html">Components Overview</a></li>
+                        <li><a href="/docs/technical-components/cli.html">CLI</a></li>
+                        <li><a href="/docs/technical-components/gateway.html">Gateway</a></li>
+                        <li><a href="/docs/technical-components/kledspace.html">Kledspace</a></li>
+                        <li><a href="/docs/technical-components/kpolicy.html">kPolicy</a></li>
+                        <li><a href="/docs/technical-components/kled-cluster-integration.html">Kled Cluster Integration</a></li>
+                        <li><a href="/docs/technical-components/virtual-cluster-integration.html">Virtual Cluster Integration</a></li>
+                        <li><a href="/docs/technical-components/rust-flutter-bridge.html">Rust-Flutter Bridge</a></li>
+                    </ul>
+                </li>
+                <li><a href="/docs/enterprise-ai-ml/index.html">Enterprise AI/ML</a></li>
+                <li><a href="/docs/roadmap/index.html">Roadmap</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+<p></p>
+<h2>Overview</h2>
+<p></p>
+The Kled.io Ecosystem leverages Flutter as its primary UI framework, providing a consistent user experience across web, mobile, and desktop platforms. This approach enables enterprises to develop and deploy applications that work seamlessly across different devices and platforms, all powered by our Rust backend.
+<p></p>
+<h2>Architecture</h2>
+<p></p>
+<pre><code class="language-mermaid">
+graph TD
+    A[Flutter UI Layer] --> B[Flutter-Rust Bridge]
+    B --> C[Rust Backend]
+    C --> D[Native Platform APIs]
+<p></p>
+    subgraph "Frontend"
+    A
+    end
+<p></p>
+    subgraph "Integration Layer"
+    B
+    end
+<p></p>
+    subgraph "Backend"
+    C
+    D
+    end
+<p></p>
+    E[Web App] --> A
+    F[Mobile App] --> A
+    G[Desktop App] --> A
+</code></pre>
+<p></p>
+The Flutter UI ecosystem sits at the frontend of the Kled.io platform, providing a consistent user interface across different platforms. This architecture enables a single codebase to target multiple platforms, reducing development effort and ensuring a consistent user experience.
+<p></p>
+<h2>Key Components</h2>
+<p></p>
+<h3>Flutter Framework</h3>
+<p></p>
+The Flutter framework provides a comprehensive set of UI components and tools for building cross-platform applications. It enables developers to create high-performance, visually attractive applications that work consistently across different platforms.
+<p></p>
+</code></pre>dart
+import 'package:flutter/material.dart';
+<p></p>
+void main() {
+  runApp(const MyApp());
+}
+<p></p>
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+<p></p>
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Kled.io',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const MyHomePage(title: 'Kled.io Dashboard'),
+    );
+  }
+}
+<p></p>
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
+<p></p>
+  final String title;
+<p></p>
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+<p></p>
+class _MyHomePageState extends State<MyHomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text(
+              'Welcome to Kled.io',
+              style: TextStyle(fontSize: 24),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+</code></pre>
+<p></p>
+<h3>Flutter-Rust Bridge</h3>
+<p></p>
+The Flutter-Rust Bridge enables seamless communication between the Flutter UI and the Rust backend, allowing for efficient data exchange and function calls between the two environments.
+<p></p>
+</code></pre>dart
+import 'package:flutter/material.dart';
+import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
+import 'package:kled_app/bridge_generated.dart';
+<p></p>
+class RustBridgeExample extends StatefulWidget {
+  const RustBridgeExample({Key? key}) : super(key: key);
+<p></p>
+  @override
+  State<RustBridgeExample> createState() => _RustBridgeExampleState();
+}
+<p></p>
+class _RustBridgeExampleState extends State<RustBridgeExample> {
+  final api = RustAPI();
+  String _greeting = '';
+<p></p>
+  @override
+  void initState() {
+    super.initState();
+    _loadGreeting();
+  }
+<p></p>
+  Future<void> _loadGreeting() async {
+    final greeting = await api.greet(name: 'Flutter');
+    setState(() {
+      _greeting = greeting;
+    });
+  }
+<p></p>
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Flutter-Rust Bridge Example'),
+      ),
+      body: Center(
+        child: Text(
+          _greeting,
+          style: const TextStyle(fontSize: 24),
+        ),
+      ),
+    );
+  }
+}
+</code></pre>
+<p></p>
+<h3>Tauri Integration</h3>
+<p></p>
+The Tauri integration enables the Flutter UI to work seamlessly with the Tauri framework, providing a native desktop experience while leveraging the cross-platform capabilities of Flutter.
+<p></p>
+</code></pre>dart
+import 'package:flutter/material.dart';
+import 'package:tauri_flutter/tauri_flutter.dart';
+<p></p>
+class TauriExample extends StatefulWidget {
+  const TauriExample({Key? key}) : super(key: key);
+<p></p>
+  @override
+  State<TauriExample> createState() => _TauriExampleState();
+}
+<p></p>
+class _TauriExampleState extends State<TauriExample> {
+  final tauri = TauriFlutter();
+  String _message = '';
+<p></p>
+  @override
+  void initState() {
+    super.initState();
+    _loadMessage();
+  }
+<p></p>
+  Future<void> _loadMessage() async {
+    final message = await tauri.invoke('get_message', {});
+    setState(() {
+      _message = message;
+    });
+  }
+<p></p>
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Tauri Integration Example'),
+      ),
+      body: Center(
+        child: Text(
+          _message,
+          style: const TextStyle(fontSize: 24),
+        ),
+      ),
+    );
+  }
+}
+</code></pre>
+<p></p>
+<h2>Benefits</h2>
+<p></p>
+<h3>Cross-Platform Compatibility</h3>
+<p></p>
+The Flutter UI ecosystem enables applications to run consistently across different platforms, providing a seamless user experience regardless of the device or platform:
+<p></p>
+<ul>
+<li>**Web**: Flutter applications can be compiled to web standards (HTML, CSS, JavaScript) using the Flutter web renderer, enabling them to run in any modern web browser.</li>
+<ul>
+<li>**Mobile**: Flutter applications can be compiled to native ARM code for iOS and Android, providing native-like performance and access to platform-specific features.</li>
+<ul>
+<li>**Desktop**: Flutter applications can be compiled to native code for Windows, macOS, and Linux, providing a native desktop experience.</li>
+<p></p>
+<h3>Performance</h3>
+<p></p>
+The Flutter UI ecosystem provides exceptional performance, with smooth animations and responsive interfaces:
+<p></p>
+<ul>
+<li>**Dart AOT Compilation**: Flutter applications are compiled to native code using Dart's ahead-of-time (AOT) compiler, providing native-like performance.</li>
+<ul>
+<li>**Skia Graphics Engine**: Flutter uses the Skia graphics engine to render UI components, ensuring smooth animations and consistent rendering across platforms.</li>
+<ul>
+<li>**Efficient Resource Usage**: Flutter's widget system is designed for efficiency, minimizing resource usage and ensuring optimal performance even on low-end devices.</li>
+<p></p>
+<h3>Developer Productivity</h3>
+<p></p>
+The Flutter UI ecosystem enhances developer productivity, enabling faster development and easier maintenance:
+<p></p>
+<ul>
+<li>**Hot Reload**: Flutter's hot reload feature enables developers to see the effects of code changes immediately, without restarting the application.</li>
+<ul>
+<li>**Rich Widget Library**: Flutter provides a comprehensive set of pre-built widgets that can be customized to match the application's design requirements.</li>
+<ul>
+<li>**Strong Tooling**: Flutter comes with a rich set of development tools, including a powerful IDE integration, debugging tools, and performance profiling.</li>
+<p></p>
+<h2>Implementation Details</h2>
+<p></p>
+<h3>UI Components</h3>
+<p></p>
+The Kled.io UI is built using a set of custom Flutter widgets that provide a consistent look and feel across different parts of the application:
+<p></p>
+</code></pre>dart
+import 'package:flutter/material.dart';
+<p></p>
+class KledButton extends StatelessWidget {
+  final String text;
+  final VoidCallback onPressed;
+  final bool primary;
+<p></p>
+  const KledButton({
+    Key? key,
+    required this.text,
+    required this.onPressed,
+    this.primary = true,
+  }) : super(key: key);
+<p></p>
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        primary: primary ? Theme.of(context).primaryColor : Colors.grey[300],
+        onPrimary: primary ? Colors.white : Colors.black87,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+}
+<p></p>
+class KledCard extends StatelessWidget {
+  final Widget child;
+  final String? title;
+  final VoidCallback? onTap;
+<p></p>
+  const KledCard({
+    Key? key,
+    required this.child,
+    this.title,
+    this.onTap,
+  }) : super(key: key);
+<p></p>
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (title != null)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Text(
+                    title!,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              child,
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+</code></pre>
+<p></p>
+<h3>State Management</h3>
+<p></p>
+The Kled.io UI uses a combination of state management approaches to handle different types of state:
+<p></p>
+</code></pre>dart
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+<p></p>
+class WorkspaceState extends ChangeNotifier {
+  List<Workspace> _workspaces = [];
+  Workspace? _selectedWorkspace;
+<p></p>
+  List<Workspace> get workspaces => _workspaces;
+  Workspace? get selectedWorkspace => _selectedWorkspace;
+<p></p>
+  void setWorkspaces(List<Workspace> workspaces) {
+    _workspaces = workspaces;
+    notifyListeners();
+  }
+<p></p>
+  void selectWorkspace(Workspace workspace) {
+    _selectedWorkspace = workspace;
+    notifyListeners();
+  }
+}
+<p></p>
+class WorkspaceProvider extends StatelessWidget {
+  final Widget child;
+<p></p>
+  const WorkspaceProvider({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
+<p></p>
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => WorkspaceState(),
+      child: child,
+    );
+  }
+}
+<p></p>
+class WorkspaceList extends StatelessWidget {
+  const WorkspaceList({Key? key}) : super(key: key);
+<p></p>
+  @override
+  Widget build(BuildContext context) {
+    final workspaceState = Provider.of<WorkspaceState>(context);
+    final workspaces = workspaceState.workspaces;
+<p></p>
+    return ListView.builder(
+      itemCount: workspaces.length,
+      itemBuilder: (context, index) {
+        final workspace = workspaces[index];
+        return ListTile(
+          title: Text(workspace.name),
+          subtitle: Text(workspace.description),
+          onTap: () {
+            workspaceState.selectWorkspace(workspace);
+          },
+        );
+      },
+    );
+  }
+}
+</code></pre>
+<p></p>
+<h3>Platform Integration</h3>
+<p></p>
+The Kled.io UI integrates with platform-specific features through a set of platform channels and plugins:
+<p></p>
+</code></pre>dart
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+<p></p>
+class PlatformIntegration {
+  static const MethodChannel _channel = MethodChannel('kled.io/platform');
+<p></p>
+  static Future<String> getPlatformVersion() async {
+    try {
+      final String version = await _channel.invokeMethod('getPlatformVersion');
+      return version;
+    } on PlatformException catch (e) {
+      return 'Failed to get platform version: ${e.message}';
+    }
+  }
+<p></p>
+  static Future<bool> openFile(String path) async {
+    try {
+      final bool result = await _channel.invokeMethod('openFile', {'path': path});
+      return result;
+    } on PlatformException catch (e) {
+      return false;
+    }
+  }
+<p></p>
+  static Future<String?> saveFile(String content, String fileName) async {
+    try {
+      final String? path = await _channel.invokeMethod('saveFile', {
+        'content': content,
+        'fileName': fileName,
+      });
+      return path;
+    } on PlatformException catch (e) {
+      return null;
+    }
+  }
+}
+</code></pre>
+<p></p>
+<h2>Conclusion</h2>
+<p></p>
+The Flutter UI ecosystem is a key component of the Kled.io platform, providing a consistent user experience across web, mobile, and desktop platforms. By leveraging Flutter's cross-platform capabilities and integrating with our Rust backend through the Flutter-Rust Bridge, we enable enterprises to develop and deploy applications that work seamlessly across different devices and platforms, all while maintaining the performance and security benefits of Rust.
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Kled.io. All rights reserved.</p>
+    </footer>
+</body>
+</html>

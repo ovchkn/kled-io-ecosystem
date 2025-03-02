@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture - Kled.io Ecosystem Documentation</title>
+    <link rel="stylesheet" href="/css/custom.css">
+    <style>
+        :root {
+            --primary-color: #0066cc;
+            --secondary-color: #4CAF50;
+            --accent-color: #FF5722;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --border-color: #ddd;
+            --sidebar-width: 280px;
+            --header-height: 60px;
+            --content-max-width: 1200px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0 20px;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .main-container {
+            display: flex;
+            margin-top: var(--header-height);
+            flex: 1;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--light-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            position: fixed;
+            top: var(--header-height);
+            bottom: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: var(--text-color);
+            display: block;
+            padding: 5px 0;
+            transition: color 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: var(--primary-color);
+        }
+
+        .content {
+            flex: 1;
+            padding: 30px;
+            margin-left: var(--sidebar-width);
+            max-width: calc(var(--content-max-width) - var(--sidebar-width));
+        }
+
+        .content h1 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .content p {
+            margin-bottom: 15px;
+        }
+
+        .content ul, .content ol {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+
+        .content a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .content a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: var(--light-bg);
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .content {
+                margin-left: 0;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kled.io Ecosystem Documentation</h1>
+    </header>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <h2>Documentation</h2>
+            <ul>
+                <li><a href="/docs/overview/index.html">Overview</a></li>
+                <li>
+                    <h3>Architecture</h3>
+                    <ul>
+                        <li><a href="/docs/architecture/index.html">Architecture Overview</a></li>
+                        <li><a href="/docs/architecture/workspace-technology.html">Workspace Technology</a></li>
+                        <li><a href="/docs/architecture/kled-cluster.html">Kled Cluster</a></li>
+                        <li><a href="/docs/architecture/pure-rust-communication.html">Pure Rust Communication</a></li>
+                        <li><a href="/docs/architecture/flutter-ui.html">Flutter UI</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <h3>Technical Components</h3>
+                    <ul>
+                        <li><a href="/docs/technical-components/index.html">Components Overview</a></li>
+                        <li><a href="/docs/technical-components/cli.html">CLI</a></li>
+                        <li><a href="/docs/technical-components/gateway.html">Gateway</a></li>
+                        <li><a href="/docs/technical-components/kledspace.html">Kledspace</a></li>
+                        <li><a href="/docs/technical-components/kpolicy.html">kPolicy</a></li>
+                        <li><a href="/docs/technical-components/kled-cluster-integration.html">Kled Cluster Integration</a></li>
+                        <li><a href="/docs/technical-components/virtual-cluster-integration.html">Virtual Cluster Integration</a></li>
+                        <li><a href="/docs/technical-components/rust-flutter-bridge.html">Rust-Flutter Bridge</a></li>
+                    </ul>
+                </li>
+                <li><a href="/docs/enterprise-ai-ml/index.html">Enterprise AI/ML</a></li>
+                <li><a href="/docs/roadmap/index.html">Roadmap</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+<p></p>
+The Kled.io Ecosystem is built on a robust and scalable architecture that enables enterprises to deploy and manage AI/ML workloads with unprecedented efficiency, security, and scalability. This section provides an overview of the key architectural components of the Kled.io Ecosystem.
+<p></p>
+<h2>Architecture Overview</h2>
+<p></p>
+<pre><code class="language-mermaid">
+graph TD
+    A[User Interface] --> B[Communication Layer]
+    B --> C[Backend Services]
+    C --> D[Infrastructure]
+<p></p>
+    subgraph "User Interface"
+    A1[CLI]
+    A2[Flutter UI]
+    end
+<p></p>
+    subgraph "Communication Layer"
+    B1[Gateway System]
+    B2[Rust-to-Flutter Bridge]
+    end
+<p></p>
+    subgraph "Backend Services"
+    C1[Rust Backend]
+    C2[Hashicorp Cloud Platform]
+    end
+<p></p>
+    subgraph "Infrastructure"
+    D1[Kled Clusters]
+    D2[Workspace Technology]
+    end
+<p></p>
+    A1 --> B1
+    A2 --> B2
+    B1 --> C1
+    B2 --> C1
+    C1 --> C2
+    C1 --> D1
+    C1 --> D2
+    C2 --> D1
+</code></pre>
+<p></p>
+The Kled.io Ecosystem architecture is designed to provide a seamless experience for users, from the command-line interface to the Kled Cluster infrastructure. The architecture is built on several key components, each with its own responsibilities and features.
+<p></p>
+<h2>Key Components</h2>
+<p></p>
+<h3>[Pure Rust Communication](./pure-rust-communication.md)</h3>
+<p></p>
+The Pure Rust Communication layer provides a high-performance, secure, and reliable communication infrastructure for the Kled.io Ecosystem. Built entirely in Rust, this layer enables efficient data exchange between different components of the system, ensuring optimal performance and security.
+<p></p>
+Key features:
+<ul>
+<li>High-performance communication using Rust's zero-cost abstractions</li>
+<ul>
+<li>Strong type safety and memory safety guarantees</li>
+<ul>
+<li>Efficient serialization and deserialization of data</li>
+<ul>
+<li>Comprehensive error handling and recovery mechanisms</li>
+<p></p>
+[Learn more about Pure Rust Communication](./pure-rust-communication.md)
+<p></p>
+<h3>[Kled Cluster](./kled-cluster.md)</h3>
+<p></p>
+Kled Clusters are fully operable Kubernetes clusters running inside Physical Clusters, providing a secure and efficient environment for running AI/ML workloads. This architecture enables enterprises to maximize the value of their infrastructure investments while ensuring the security and performance of their AI/ML applications.
+<p></p>
+Key features:
+<ul>
+<li>Resource efficiency through shared infrastructure</li>
+<ul>
+<li>Strong isolation between workloads</li>
+<ul>
+<li>Seamless scaling for changing requirements</li>
+<ul>
+<li>Advanced user management and administration</li>
+<ul>
+<li>Support for both external and internal clustering</li>
+<p></p>
+[Learn more about Kled Cluster](./kled-cluster.md)
+<p></p>
+<h3>[Flutter UI](./flutter-ui.md)</h3>
+<p></p>
+The Flutter UI provides a cross-platform user interface for the Kled.io Ecosystem, enabling users to manage their workspaces, Kled Clusters, and AI/ML workloads from any device. Built with Flutter, the UI offers a consistent and intuitive experience across web, mobile, and desktop platforms.
+<p></p>
+Key features:
+<ul>
+<li>Cross-platform support for web, mobile, and desktop</li>
+<ul>
+<li>Consistent and intuitive user experience</li>
+<ul>
+<li>High-performance rendering and animations</li>
+<ul>
+<li>Comprehensive set of UI components and widgets</li>
+<p></p>
+[Learn more about Flutter UI](./flutter-ui.md)
+<p></p>
+<h2>[Advanced Workspace Technology](./workspace-technology.md)</h2>
+<p></p>
+The Kled.io Ecosystem features an advanced workspace technology that provides a comprehensive environment for development and deployment. This technology is built on DevPod and Daytona, with a proprietary preload for loading Kled into workspaces, creating a powerful and flexible development environment.
+<p></p>
+Key features:
+<ul>
+<li>DevPod + Daytona integration for powerful workspace management</li>
+<ul>
+<li>Proprietary preload with full language support and Docker/Kubernetes tools</li>
+<ul>
+<li>Multiple workspace providers (local, Kubernetes, cloud)</li>
+<ul>
+<li>Monorepo support with project discovery and dependency management</li>
+<ul>
+<li>Linux-like environment with comprehensive development tools</li>
+<p></p>
+[Learn more about the Advanced Workspace Technology](./workspace-technology.md)
+<p></p>
+<h2>Hashicorp Cloud Platform Integration</h2>
+<p></p>
+The Kled.io Ecosystem includes comprehensive integration with the Hashicorp Cloud Platform (HCP), providing a robust foundation for infrastructure management, security, and automation:
+<p></p>
+<h3>Terraform Integration</h3>
+<p></p>
+The Kled.io Ecosystem integrates with Terraform for infrastructure as code, enabling users to define and provision infrastructure using a declarative configuration language. This integration enables enterprises to manage their infrastructure in a consistent and repeatable way, ensuring that all environments are configured correctly.
+<p></p>
+<h3>Vault Integration</h3>
+<p></p>
+The Kled.io Ecosystem integrates with Vault for secrets management, providing a secure way to store and access sensitive information. This integration enables enterprises to manage secrets across their entire infrastructure, ensuring that sensitive information is protected and accessible only to authorized users.
+<p></p>
+<h3>Consul Integration</h3>
+<p></p>
+The Kled.io Ecosystem integrates with Consul for service discovery and configuration management, enabling services to discover and connect with each other. This integration enables enterprises to build dynamic and resilient applications that can adapt to changing environments.
+<p></p>
+<h3>Additional Hashicorp Integrations</h3>
+<p></p>
+The Kled.io Ecosystem also integrates with other Hashicorp products:
+<p></p>
+<ul>
+<li>**Waypoint**: For application deployment and lifecycle management.</li>
+<ul>
+<li>**Packer**: For building machine images for multiple platforms.</li>
+<ul>
+<li>**Vagrant**: For development environment management.</li>
+<ul>
+<li>**Vault Radar**: For secrets detection and management.</li>
+<ul>
+<li>**Vault Secrets**: For secrets management and rotation.</li>
+<ul>
+<li>**Vault Dedicated**: For dedicated Vault instances.</li>
+<p></p>
+<h2>Architecture Benefits</h2>
+<p></p>
+The Kled.io Ecosystem architecture provides several key benefits for enterprises:
+<p></p>
+<h3>Performance</h3>
+<p></p>
+The Kled.io Ecosystem architecture is designed for high performance, enabling enterprises to run AI/ML workloads efficiently:
+<p></p>
+<ul>
+<li>**Pure Rust Communication**: The Pure Rust Communication layer provides high-performance communication between different components of the system.</li>
+<ul>
+<li>**Kled Clusters**: Kled Clusters enable efficient resource utilization by allowing multiple clusters to share the same underlying infrastructure.</li>
+<ul>
+<li>**Flutter UI**: The Flutter UI provides a high-performance user interface that is responsive and intuitive.</li>
+<p></p>
+<h3>Security</h3>
+<p></p>
+The Kled.io Ecosystem architecture includes comprehensive security features, ensuring that enterprises can deploy and manage AI/ML workloads securely:
+<p></p>
+<ul>
+<li>**Pure Rust Communication**: The Pure Rust Communication layer provides strong type safety and memory safety guarantees, preventing common security vulnerabilities.</li>
+<ul>
+<li>**Kled Clusters**: Kled Clusters provide strong isolation between different workloads, ensuring that each application has its own secure environment.</li>
+<ul>
+<li>**Hashicorp Cloud Platform**: The Hashicorp Cloud Platform integration provides comprehensive security features, including secrets management, identity management, and policy enforcement.</li>
+<p></p>
+<h3>Scalability</h3>
+<p></p>
+The Kled.io Ecosystem architecture is designed for scalability, enabling enterprises to adapt to changing requirements:
+<p></p>
+<ul>
+<li>**Kled Clusters**: Kled Clusters enable seamless scaling of AI/ML workloads, allowing enterprises to adapt to changing requirements.</li>
+<ul>
+<li>**Workspace Technology**: The Workspace Technology supports monorepos and project discovery, enabling enterprises to manage complex projects efficiently.</li>
+<ul>
+<li>**Hashicorp Cloud Platform**: The Hashicorp Cloud Platform integration provides infrastructure as code, enabling enterprises to provision and manage infrastructure at scale.</li>
+<p></p>
+<h2>Conclusion</h2>
+<p></p>
+The Kled.io Ecosystem architecture provides a robust and scalable foundation for deploying and managing AI/ML workloads. By leveraging the strengths of each component, the Kled.io Ecosystem enables enterprises to develop, deploy, and manage AI/ML applications with unprecedented efficiency, security, and scalability.
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Kled.io. All rights reserved.</p>
+    </footer>
+</body>
+</html>

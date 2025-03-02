@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rust-to-Flutter Bridge - Kled.io Ecosystem Documentation</title>
+    <link rel="stylesheet" href="/css/custom.css">
+    <style>
+        :root {
+            --primary-color: #0066cc;
+            --secondary-color: #4CAF50;
+            --accent-color: #FF5722;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --border-color: #ddd;
+            --sidebar-width: 280px;
+            --header-height: 60px;
+            --content-max-width: 1200px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0 20px;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .main-container {
+            display: flex;
+            margin-top: var(--header-height);
+            flex: 1;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--light-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            position: fixed;
+            top: var(--header-height);
+            bottom: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: var(--text-color);
+            display: block;
+            padding: 5px 0;
+            transition: color 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: var(--primary-color);
+        }
+
+        .content {
+            flex: 1;
+            padding: 30px;
+            margin-left: var(--sidebar-width);
+            max-width: calc(var(--content-max-width) - var(--sidebar-width));
+        }
+
+        .content h1 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .content p {
+            margin-bottom: 15px;
+        }
+
+        .content ul, .content ol {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+
+        .content a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .content a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: var(--light-bg);
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .content {
+                margin-left: 0;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kled.io Ecosystem Documentation</h1>
+    </header>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <h2>Documentation</h2>
+            <ul>
+                <li><a href="/docs/overview/index.html">Overview</a></li>
+                <li>
+                    <h3>Architecture</h3>
+                    <ul>
+                        <li><a href="/docs/architecture/index.html">Architecture Overview</a></li>
+                        <li><a href="/docs/architecture/workspace-technology.html">Workspace Technology</a></li>
+                        <li><a href="/docs/architecture/kled-cluster.html">Kled Cluster</a></li>
+                        <li><a href="/docs/architecture/pure-rust-communication.html">Pure Rust Communication</a></li>
+                        <li><a href="/docs/architecture/flutter-ui.html">Flutter UI</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <h3>Technical Components</h3>
+                    <ul>
+                        <li><a href="/docs/technical-components/index.html">Components Overview</a></li>
+                        <li><a href="/docs/technical-components/cli.html">CLI</a></li>
+                        <li><a href="/docs/technical-components/gateway.html">Gateway</a></li>
+                        <li><a href="/docs/technical-components/kledspace.html">Kledspace</a></li>
+                        <li><a href="/docs/technical-components/kpolicy.html">kPolicy</a></li>
+                        <li><a href="/docs/technical-components/kled-cluster-integration.html">Kled Cluster Integration</a></li>
+                        <li><a href="/docs/technical-components/virtual-cluster-integration.html">Virtual Cluster Integration</a></li>
+                        <li><a href="/docs/technical-components/rust-flutter-bridge.html">Rust-Flutter Bridge</a></li>
+                    </ul>
+                </li>
+                <li><a href="/docs/enterprise-ai-ml/index.html">Enterprise AI/ML</a></li>
+                <li><a href="/docs/roadmap/index.html">Roadmap</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+<p></p>
+<h2>Overview</h2>
+<p></p>
+The Rust-to-Flutter Bridge is a critical component of the Kled.io Ecosystem, enabling seamless integration between the Rust backend and Flutter frontend. This bridge allows for efficient data exchange and function calls between the two environments, providing the performance and security benefits of Rust with the cross-platform UI capabilities of Flutter.
+<p></p>
+<h2>Architecture</h2>
+<p></p>
+<pre><code class="language-mermaid">
+graph TD
+    A[Flutter UI] --> B[Dart API]
+    B --> C[Flutter-Rust Bridge]
+    C --> D[Rust API]
+    D --> E[Rust Backend]
+<p></p>
+    subgraph "Frontend Layer"
+    A
+    B
+    end
+<p></p>
+    subgraph "Integration Layer"
+    C
+    end
+<p></p>
+    subgraph "Backend Layer"
+    D
+    E
+    end
+</code></pre>
+<p></p>
+The Rust-to-Flutter Bridge sits between the Flutter UI and the Rust backend, providing a seamless interface for communication between the two environments. This architecture enables the Flutter UI to leverage the performance and security benefits of Rust while maintaining the cross-platform capabilities of Flutter.
+<p></p>
+<h2>Key Components</h2>
+<p></p>
+<h3>Flutter-Rust Bridge</h3>
+<p></p>
+The Flutter-Rust Bridge is a code generation tool that creates the necessary bindings between Rust and Dart, enabling seamless communication between the two languages:
+<p></p>
+</code></pre>rust
+#[flutter_rust_bridge::frb(sync)]
+pub fn greet(name: String) -> String {
+    format!("Hello, {name}!")
+}
+<p></p>
+#[flutter_rust_bridge::frb(init)]
+pub fn init_app() {
+    // Default utilities - feel free to customize
+    flutter_rust_bridge::setup_default_user_utils();
+}
+</code></pre>
+<p></p>
+<h3>Dart API</h3>
+<p></p>
+The Dart API provides a type-safe interface for the Flutter UI to interact with the Rust backend:
+<p></p>
+</code></pre>dart
+import 'package:flutter/material.dart';
+import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
+import 'package:kled_app/bridge_generated.dart';
+<p></p>
+class RustBridgeExample extends StatefulWidget {
+  const RustBridgeExample({Key? key}) : super(key: key);
+<p></p>
+  @override
+  State<RustBridgeExample> createState() => _RustBridgeExampleState();
+}
+<p></p>
+class _RustBridgeExampleState extends State<RustBridgeExample> {
+  final api = RustAPI();
+  String _greeting = '';
+<p></p>
+  @override
+  void initState() {
+    super.initState();
+    _loadGreeting();
+  }
+<p></p>
+  Future<void> _loadGreeting() async {
+    final greeting = await api.greet(name: 'Flutter');
+    setState(() {
+      _greeting = greeting;
+    });
+  }
+<p></p>
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Flutter-Rust Bridge Example'),
+      ),
+      body: Center(
+        child: Text(
+          _greeting,
+          style: const TextStyle(fontSize: 24),
+        ),
+      ),
+    );
+  }
+}
+</code></pre>
+<p></p>
+<h3>Rust API</h3>
+<p></p>
+The Rust API provides the implementation of the functions that are exposed to the Flutter UI:
+<p></p>
+</code></pre>rust
+/// API for the Flutter UI
+pub struct RustAPI {
+    /// Backend client
+    client: BackendClient,
+}
+<p></p>
+impl RustAPI {
+    /// Create a new API instance
+    pub fn new() -> Self {
+        Self {
+            client: BackendClient::new(),
+        }
+    }
+<p></p>
+    /// Get a greeting
+    pub fn greet(&self, name: String) -> String {
+        format!("Hello, {}!", name)
+    }
+<p></p>
+    /// List workspaces
+    pub async fn list_workspaces(&self) -> Result<Vec<Workspace>> {
+        self.client.list_workspaces().await
+    }
+<p></p>
+    /// Create a workspace
+    pub async fn create_workspace(&self, name: String, repo: String, cluster: String) -> Result<Workspace> {
+        self.client.create_workspace(name, repo, cluster).await
+    }
+<p></p>
+    /// Delete a workspace
+    pub async fn delete_workspace(&self, id: String) -> Result<()> {
+        self.client.delete_workspace(id).await
+    }
+}
+</code></pre>
+<p></p>
+<h2>Implementation Details</h2>
+<p></p>
+<h3>Code Generation</h3>
+<p></p>
+The Flutter-Rust Bridge uses code generation to create the necessary bindings between Rust and Dart:
+<p></p>
+<pre><code class="language-bash">
+Generate the bindings
+flutter_rust_bridge_codegen \
+    --rust-input src/api.rs \
+    --dart-output lib/bridge_generated.dart \
+    --c-output ios/Runner/bridge_generated.h \
+    --extra-c-output-path macos/Runner/ \
+    --dart-decl-output lib/bridge_definitions.dart
+</code></pre>
+<p></p>
+The generated code provides a type-safe interface for the Flutter UI to interact with the Rust backend:
+<p></p>
+</code></pre>dart
+// Generated Dart code
+class RustAPI {
+  Future<String> greet({required String name}) {
+    return executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => ffi.wire_greet(port_, _api.toWire(name)),
+      parseSuccessData: _api.parseSuccessData,
+      parseErrorData: _api.parseErrorData,
+    ));
+  }
+<p></p>
+  Future<List<Workspace>> listWorkspaces() {
+    return executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => ffi.wire_list_workspaces(port_),
+      parseSuccessData: (data) => _api.parseList<Workspace>(data, (item) => _api.parseWorkspace(item)),
+      parseErrorData: _api.parseErrorData,
+    ));
+  }
+<p></p>
+  Future<Workspace> createWorkspace({required String name, required String repo, required String cluster}) {
+    return executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => ffi.wire_create_workspace(port_, _api.toWire(name), _api.toWire(repo), _api.toWire(cluster)),
+      parseSuccessData: (data) => _api.parseWorkspace(data),
+      parseErrorData: _api.parseErrorData,
+    ));
+  }
+<p></p>
+  Future<void> deleteWorkspace({required String id}) {
+    return executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => ffi.wire_delete_workspace(port_, _api.toWire(id)),
+      parseSuccessData: (_) => null,
+      parseErrorData: _api.parseErrorData,
+    ));
+  }
+}
+</code></pre>
+<p></p>
+<h3>Data Serialization</h3>
+<p></p>
+The Flutter-Rust Bridge handles data serialization between Rust and Dart, ensuring that data is correctly converted between the two languages:
+<p></p>
+</code></pre>rust
+/// Workspace data
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Workspace {
+    /// Workspace ID
+    pub id: String,
+    /// Workspace name
+    pub name: String,
+    /// Repository URL
+    pub repo: String,
+    /// Virtual cluster
+    pub cluster: String,
+    /// Workspace status
+    pub status: WorkspaceStatus,
+}
+<p></p>
+/// Workspace status
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum WorkspaceStatus {
+    /// Creating
+    Creating,
+    /// Running
+    Running,
+    /// Stopped
+    Stopped,
+    /// Failed
+    Failed,
+}
+</code></pre>
+<p></p>
+The generated code provides the necessary serialization and deserialization functions:
+<p></p>
+</code></pre>dart
+// Generated Dart code
+class Workspace {
+  final String id;
+  final String name;
+  final String repo;
+  final String cluster;
+  final WorkspaceStatus status;
+<p></p>
+  Workspace({
+    required this.id,
+    required this.name,
+    required this.repo,
+    required this.cluster,
+    required this.status,
+  });
+}
+<p></p>
+enum WorkspaceStatus {
+  creating,
+  running,
+  stopped,
+  failed,
+}
+</code></pre>
+<p></p>
+<h3>Error Handling</h3>
+<p></p>
+The Flutter-Rust Bridge provides comprehensive error handling, ensuring that errors in the Rust backend are properly propagated to the Flutter UI:
+<p></p>
+</code></pre>rust
+/// Error type
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum Error {
+    /// Not found
+    NotFound,
+    /// Invalid input
+    InvalidInput(String),
+    /// Internal error
+    Internal(String),
+}
+<p></p>
+impl From<Error> for String {
+    fn from(error: Error) -> Self {
+        match error {
+            Error::NotFound => "Not found".to_string(),
+            Error::InvalidInput(message) => format!("Invalid input: {}", message),
+            Error::Internal(message) => format!("Internal error: {}", message),
+        }
+    }
+}
+</code></pre>
+<p></p>
+The generated code provides the necessary error handling functions:
+<p></p>
+</code></pre>dart
+// Generated Dart code
+class RustError {
+  final String message;
+<p></p>
+  RustError(this.message);
+<p></p>
+  @override
+  String toString() => message;
+}
+</code></pre>
+<p></p>
+<h2>Benefits</h2>
+<p></p>
+<h3>Performance</h3>
+<p></p>
+The Rust-to-Flutter Bridge provides exceptional performance, with low latency and high throughput:
+<p></p>
+<ul>
+<li>**Zero-Copy Data Transfer**: The bridge minimizes data copying, reducing CPU and memory overhead.</li>
+<ul>
+<li>**Efficient Memory Management**: Rust's ownership model ensures efficient memory usage without the overhead of garbage collection.</li>
+<ul>
+<li>**Optimized Protocol**: The communication protocol is designed for efficiency, minimizing overhead and maximizing throughput.</li>
+<p></p>
+<h3>Type Safety</h3>
+<p></p>
+The Rust-to-Flutter Bridge provides strong type safety, ensuring that data is correctly converted between Rust and Dart:
+<p></p>
+<ul>
+<li>**Compile-Time Type Checking**: The bridge performs compile-time type checking, catching many potential errors before they occur.</li>
+<ul>
+<li>**Runtime Type Validation**: The bridge validates types at runtime, ensuring that data is correctly converted between Rust and Dart.</li>
+<ul>
+<li>**Error Propagation**: The bridge properly propagates errors from Rust to Dart, ensuring that errors are handled correctly.</li>
+<p></p>
+<h3>Developer Experience</h3>
+<p></p>
+The Rust-to-Flutter Bridge enhances the developer experience, making it easier to build cross-platform applications with Rust and Flutter:
+<p></p>
+<ul>
+<li>**Code Generation**: The bridge generates the necessary bindings between Rust and Dart, reducing boilerplate code.</li>
+<ul>
+<li>**Type-Safe API**: The bridge provides a type-safe API for the Flutter UI to interact with the Rust backend.</li>
+<ul>
+<li>**Comprehensive Documentation**: The bridge provides comprehensive documentation, making it easier to understand and use.</li>
+<p></p>
+<h2>Integration with Other Components</h2>
+<p></p>
+<h3>Flutter UI Integration</h3>
+<p></p>
+The Rust-to-Flutter Bridge integrates with the Flutter UI through the generated Dart API:
+<p></p>
+</code></pre>dart
+import 'package:flutter/material.dart';
+import 'package:kled_app/bridge_generated.dart';
+<p></p>
+class WorkspaceList extends StatefulWidget {
+  const WorkspaceList({Key? key}) : super(key: key);
+<p></p>
+  @override
+  State<WorkspaceList> createState() => _WorkspaceListState();
+}
+<p></p>
+class _WorkspaceListState extends State<WorkspaceList> {
+  final api = RustAPI();
+  List<Workspace> _workspaces = [];
+  bool _loading = true;
+  String? _error;
+<p></p>
+  @override
+  void initState() {
+    super.initState();
+    _loadWorkspaces();
+  }
+<p></p>
+  Future<void> _loadWorkspaces() async {
+    try {
+      final workspaces = await api.listWorkspaces();
+      setState(() {
+        _workspaces = workspaces;
+        _loading = false;
+        _error = null;
+      });
+    } catch (e) {
+      setState(() {
+        _loading = false;
+        _error = e.toString();
+      });
+    }
+  }
+<p></p>
+  @override
+  Widget build(BuildContext context) {
+    if (_loading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+<p></p>
+    if (_error != null) {
+      return Center(
+        child: Text(
+          'Error: $_error',
+          style: const TextStyle(color: Colors.red),
+        ),
+      );
+    }
+<p></p>
+    if (_workspaces.isEmpty) {
+      return const Center(
+        child: Text('No workspaces found'),
+      );
+    }
+<p></p>
+    return ListView.builder(
+      itemCount: _workspaces.length,
+      itemBuilder: (context, index) {
+        final workspace = _workspaces[index];
+        return ListTile(
+          title: Text(workspace.name),
+          subtitle: Text(workspace.repo),
+          trailing: Text(workspace.status.toString()),
+          onTap: () {
+            // Navigate to workspace details
+          },
+        );
+      },
+    );
+  }
+}
+</code></pre>
+<p></p>
+<h3>Rust Backend Integration</h3>
+<p></p>
+The Rust-to-Flutter Bridge integrates with the Rust backend through the Rust API:
+<p></p>
+</code></pre>rust
+/// Backend client
+pub struct BackendClient {
+    /// HTTP client
+    client: reqwest::Client,
+    /// Base URL
+    base_url: String,
+}
+<p></p>
+impl BackendClient {
+    /// Create a new backend client
+    pub fn new() -> Self {
+        Self {
+            client: reqwest::Client::new(),
+            base_url: "http://localhost:3000".to_string(),
+        }
+    }
+<p></p>
+    /// List workspaces
+    pub async fn list_workspaces(&self) -> Result<Vec<Workspace>> {
+        let response = self.client
+            .get(&format!("{}/api/v1/workspaces", self.base_url))
+            .send()
+            .await?;
+<p></p>
+        if !response.status().is_success() {
+            return Err(Error::Internal(format!("Failed to list workspaces: {}", response.status())));
+        }
+<p></p>
+        let workspaces = response.json().await?;
+        Ok(workspaces)
+    }
+<p></p>
+    /// Create a workspace
+    pub async fn create_workspace(&self, name: String, repo: String, cluster: String) -> Result<Workspace> {
+        let response = self.client
+            .post(&format!("{}/api/v1/workspaces", self.base_url))
+            .json(&serde_json::json!({
+                "name": name,
+                "repo": repo,
+                "cluster": cluster,
+            }))
+            .send()
+            .await?;
+<p></p>
+        if !response.status().is_success() {
+            return Err(Error::Internal(format!("Failed to create workspace: {}", response.status())));
+        }
+<p></p>
+        let workspace = response.json().await?;
+        Ok(workspace)
+    }
+<p></p>
+    /// Delete a workspace
+    pub async fn delete_workspace(&self, id: String) -> Result<()> {
+        let response = self.client
+            .delete(&format!("{}/api/v1/workspaces/{}", self.base_url, id))
+            .send()
+            .await?;
+<p></p>
+        if !response.status().is_success() {
+            return Err(Error::Internal(format!("Failed to delete workspace: {}", response.status())));
+        }
+<p></p>
+        Ok(())
+    }
+}
+</code></pre>
+<p></p>
+<h2>Conclusion</h2>
+<p></p>
+The Rust-to-Flutter Bridge is a critical component of the Kled.io Ecosystem, enabling seamless integration between the Rust backend and Flutter frontend. By leveraging the Flutter-Rust Bridge code generation tool, the bridge provides a type-safe interface for the Flutter UI to interact with the Rust backend, ensuring optimal performance, security, and developer experience.
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Kled.io. All rights reserved.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kledspace - Kled.io Ecosystem Documentation</title>
+    <link rel="stylesheet" href="/css/custom.css">
+    <style>
+        :root {
+            --primary-color: #0066cc;
+            --secondary-color: #4CAF50;
+            --accent-color: #FF5722;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --border-color: #ddd;
+            --sidebar-width: 280px;
+            --header-height: 60px;
+            --content-max-width: 1200px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0 20px;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .main-container {
+            display: flex;
+            margin-top: var(--header-height);
+            flex: 1;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--light-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            position: fixed;
+            top: var(--header-height);
+            bottom: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: var(--text-color);
+            display: block;
+            padding: 5px 0;
+            transition: color 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: var(--primary-color);
+        }
+
+        .content {
+            flex: 1;
+            padding: 30px;
+            margin-left: var(--sidebar-width);
+            max-width: calc(var(--content-max-width) - var(--sidebar-width));
+        }
+
+        .content h1 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .content p {
+            margin-bottom: 15px;
+        }
+
+        .content ul, .content ol {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+
+        .content a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .content a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: var(--light-bg);
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .content {
+                margin-left: 0;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kled.io Ecosystem Documentation</h1>
+    </header>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <h2>Documentation</h2>
+            <ul>
+                <li><a href="/docs/overview/index.html">Overview</a></li>
+                <li>
+                    <h3>Architecture</h3>
+                    <ul>
+                        <li><a href="/docs/architecture/index.html">Architecture Overview</a></li>
+                        <li><a href="/docs/architecture/workspace-technology.html">Workspace Technology</a></li>
+                        <li><a href="/docs/architecture/kled-cluster.html">Kled Cluster</a></li>
+                        <li><a href="/docs/architecture/pure-rust-communication.html">Pure Rust Communication</a></li>
+                        <li><a href="/docs/architecture/flutter-ui.html">Flutter UI</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <h3>Technical Components</h3>
+                    <ul>
+                        <li><a href="/docs/technical-components/index.html">Components Overview</a></li>
+                        <li><a href="/docs/technical-components/cli.html">CLI</a></li>
+                        <li><a href="/docs/technical-components/gateway.html">Gateway</a></li>
+                        <li><a href="/docs/technical-components/kledspace.html">Kledspace</a></li>
+                        <li><a href="/docs/technical-components/kpolicy.html">kPolicy</a></li>
+                        <li><a href="/docs/technical-components/kled-cluster-integration.html">Kled Cluster Integration</a></li>
+                        <li><a href="/docs/technical-components/virtual-cluster-integration.html">Virtual Cluster Integration</a></li>
+                        <li><a href="/docs/technical-components/rust-flutter-bridge.html">Rust-Flutter Bridge</a></li>
+                    </ul>
+                </li>
+                <li><a href="/docs/enterprise-ai-ml/index.html">Enterprise AI/ML</a></li>
+                <li><a href="/docs/roadmap/index.html">Roadmap</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+<p></p>
+Kledspace is a powerful development environment for Kubernetes, enabling developers to build, test, and debug applications directly in Kubernetes. This proprietary technology provides a seamless development experience for Kubernetes applications, making it easy to develop and deploy applications to Kubernetes clusters.
+<p></p>
+<h2>Overview</h2>
+<p></p>
+<pre><code class="language-mermaid">
+graph TD
+    A[Kled CLI] --> B[Kledspace]
+    B --> C[Development Container]
+    B --> D[File Synchronization]
+    B --> E[Port Forwarding]
+    B --> F[Hot Reloading]
+<p></p>
+    subgraph "User Interface"
+    A
+    end
+<p></p>
+    subgraph "Kledspace"
+    B
+    C
+    D
+    E
+    F
+    end
+<p></p>
+    subgraph "Kubernetes Cluster"
+    G[Kled Cluster]
+    H[Development Pod]
+    I[Service]
+    J[Ingress]
+    end
+<p></p>
+    C --> H
+    D --> H
+    E --> I
+    F --> H
+<p></p>
+    H --> I
+    I --> J
+</code></pre>
+<p></p>
+Kledspace is designed to streamline the development workflow for Kubernetes applications, providing a seamless experience from development to deployment. By leveraging Kubernetes as the development environment, Kledspace ensures that applications behave the same way in development and production, reducing the likelihood of deployment issues.
+<p></p>
+<h2>Key Features</h2>
+<p></p>
+<h3>Development Container</h3>
+<p></p>
+Kledspace provides a development container that runs in a Kubernetes cluster, enabling developers to build, test, and debug applications directly in Kubernetes. The development container includes all the tools and dependencies needed for development, ensuring a consistent and reliable development experience.
+<p></p>
+Key features:
+<ul>
+<li>**Custom Images**: Kledspace supports custom container images, enabling developers to use the tools and dependencies they need for their specific projects.</li>
+<ul>
+<li>**Environment Variables**: Kledspace allows developers to set environment variables for the development container, ensuring that the application has access to the configuration it needs.</li>
+<ul>
+<li>**Resource Limits**: Kledspace enables developers to set resource limits for the development container, ensuring that it has the resources it needs without impacting other applications in the cluster.</li>
+<ul>
+<li>**Volume Mounts**: Kledspace supports volume mounts, enabling developers to persist data between container restarts and share data between containers.</li>
+<p></p>
+Example configuration:
+<pre><code class="language-yaml">
+Kledspace configuration
+version: v1
+name: my-app
+<p></p>
+Development container configuration
+dev:
+  # Container image
+  image: kled/dev:latest
+<p></p>
+  # Environment variables
+  env:
+    - name: NODE_ENV
+      value: development
+    - name: DEBUG
+      value: "true"
+<p></p>
+  # Resource limits
+  resources:
+    limits:
+      cpu: "1"
+      memory: "2Gi"
+    requests:
+      cpu: "0.5"
+      memory: "1Gi"
+<p></p>
+  # Volume mounts
+  volumes:
+    - name: data
+      path: /app/data
+</code></pre>
+<p></p>
+<h3>File Synchronization</h3>
+<p></p>
+Kledspace provides file synchronization between the local machine and the development container, enabling developers to edit files locally and see the changes reflected in the container in real-time. This feature ensures that developers can use their preferred tools and workflows while still benefiting from the Kubernetes development environment.
+<p></p>
+Key features:
+<ul>
+<li>**Bidirectional Synchronization**: Kledspace supports bidirectional file synchronization, enabling developers to edit files either locally or in the container.</li>
+<ul>
+<li>**Selective Synchronization**: Kledspace allows developers to specify which files and directories to synchronize, ensuring that only the necessary files are transferred.</li>
+<ul>
+<li>**Ignore Patterns**: Kledspace supports ignore patterns, enabling developers to exclude files and directories from synchronization.</li>
+<ul>
+<li>**Initial Sync**: Kledspace performs an initial synchronization when the development container starts, ensuring that all files are up to date.</li>
+<p></p>
+Example configuration:
+<pre><code class="language-yaml">
+Kledspace configuration
+version: v1
+name: my-app
+<p></p>
+File synchronization configuration
+sync:
+  - src: ./src
+    dest: /app/src
+  - src: ./package.json
+    dest: /app/package.json
+  - src: ./tsconfig.json
+    dest: /app/tsconfig.json
+<p></p>
+  # Ignore patterns
+  excludePaths:
+    - node_modules
+    - .git
+    - .vscode
+    - dist
+    - build
+</code></pre>
+<p></p>
+<h3>Port Forwarding</h3>
+<p></p>
+Kledspace provides port forwarding between the local machine and the development container, enabling developers to access services running in the container from their local machine. This feature ensures that developers can test and debug applications as if they were running locally, while still benefiting from the Kubernetes development environment.
+<p></p>
+Key features:
+<ul>
+<li>**Multiple Ports**: Kledspace supports forwarding multiple ports, enabling developers to access different services running in the container.</li>
+<ul>
+<li>**Custom Addresses**: Kledspace allows developers to specify the local address to bind to, enabling them to control how the forwarded ports are accessed.</li>
+<ul>
+<li>**Automatic Discovery**: Kledspace can automatically discover services in the Kubernetes cluster and forward their ports, simplifying the configuration process.</li>
+<ul>
+<li>**Reverse Forwarding**: Kledspace supports reverse port forwarding, enabling services in the container to access services on the local machine.</li>
+<p></p>
+Example configuration:
+<pre><code class="language-yaml">
+Kledspace configuration
+version: v1
+name: my-app
+<p></p>
+Port forwarding configuration
+ports:
+  - port: 8080:8080  # Local:Container
+  - port: 9229:9229  # For debugging
+  - port: 3000:3000  # For frontend
+</code></pre>
+<p></p>
+<h3>Hot Reloading</h3>
+<p></p>
+Kledspace provides hot reloading for applications running in the development container, enabling developers to see the changes they make to the code reflected in the running application without having to restart the container. This feature ensures that developers can iterate quickly and efficiently, reducing the time and effort required to develop and test applications.
+<p></p>
+Key features:
+<ul>
+<li>**Automatic Restart**: Kledspace can automatically restart the application when changes are detected, ensuring that the application is always running with the latest code.</li>
+<ul>
+<li>**Live Reload**: Kledspace supports live reload for web applications, enabling the browser to automatically refresh when changes are detected.</li>
+<ul>
+<li>**Selective Reloading**: Kledspace allows developers to specify which files and directories should trigger a reload, ensuring that only relevant changes cause a restart.</li>
+<ul>
+<li>**Custom Commands**: Kledspace supports custom commands for reloading, enabling developers to use the tools and workflows that best suit their projects.</li>
+<p></p>
+Example configuration:
+<pre><code class="language-yaml">
+Kledspace configuration
+version: v1
+name: my-app
+<p></p>
+Hot reloading configuration
+dev:
+  # Commands to run in the container
+  command:
+    - npm
+    - run
+    - dev
+<p></p>
+  # Files to watch for changes
+  watch:
+    - src/**/*
+    - package.json
+    - tsconfig.json
+<p></p>
+  # Command to run when changes are detected
+  restart:
+    command:
+      - npm
+      - run
+      - dev
+</code></pre>
+<p></p>
+<h3>Debugging</h3>
+<p></p>
+Kledspace provides comprehensive debugging capabilities for applications running in the development container, enabling developers to debug applications directly in Kubernetes. This feature ensures that developers can identify and fix issues quickly and efficiently, reducing the time and effort required to develop and test applications.
+<p></p>
+Key features:
+<ul>
+<li>**Remote Debugging**: Kledspace supports remote debugging for various languages and frameworks, enabling developers to debug applications running in the container from their local machine.</li>
+<ul>
+<li>**Debug Configurations**: Kledspace provides pre-configured debug configurations for popular languages and frameworks, simplifying the setup process.</li>
+<ul>
+<li>**Breakpoints**: Kledspace supports breakpoints, enabling developers to pause the execution of the application at specific points and inspect the state.</li>
+<ul>
+<li>**Variable Inspection**: Kledspace allows developers to inspect variables and their values during debugging, providing insights into the application's behavior.</li>
+<p></p>
+Example configuration:
+<pre><code class="language-yaml">
+Kledspace configuration
+version: v1
+name: my-app
+<p></p>
+Debugging configuration
+dev:
+  # Port forwarding for debugging
+  ports:
+    - port: 9229:9229  # For Node.js debugging
+<p></p>
+  # Command to run with debugging enabled
+  command:
+    - node
+    - --inspect=0.0.0.0:9229
+    - app.js
+</code></pre>
+<p></p>
+<h2>Integration with Kled Clusters</h2>
+<p></p>
+Kledspace integrates seamlessly with Kled Clusters, enabling developers to create development environments in Kled Clusters and deploy applications to them. This integration ensures that developers can leverage the security and efficiency of Kled Clusters while still benefiting from the powerful development capabilities of Kledspace.
+<p></p>
+Key features:
+<ul>
+<li>**Cluster Selection**: Kledspace allows developers to select which Kled Cluster to use for development, enabling them to choose the environment that best suits their needs.</li>
+<ul>
+<li>**Namespace Isolation**: Kledspace creates isolated namespaces in the Kled Cluster for each development environment, ensuring that different environments do not interfere with each other.</li>
+<ul>
+<li>**Resource Quotas**: Kledspace respects the resource quotas of the Kled Cluster, ensuring that development environments do not consume excessive resources.</li>
+<ul>
+<li>**Security Policies**: Kledspace adheres to the security policies of the Kled Cluster, ensuring that development environments are secure and compliant.</li>
+<p></p>
+Example configuration:
+<pre><code class="language-yaml">
+Kledspace configuration
+version: v1
+name: my-app
+<p></p>
+Kled Cluster configuration
+cluster:
+  name: dev-cluster
+  namespace: my-app-dev
+<p></p>
+Development container configuration
+dev:
+  # Container image
+  image: kled/dev:latest
+<p></p>
+  # Resource limits
+  resources:
+    limits:
+      cpu: "1"
+      memory: "2Gi"
+    requests:
+      cpu: "0.5"
+      memory: "1Gi"
+</code></pre>
+<p></p>
+<h2>Example Configurations</h2>
+<p></p>
+<h3>JavaScript Application</h3>
+<p></p>
+<pre><code class="language-yaml">
+Kledspace configuration for a JavaScript application
+version: v1
+name: js-app
+<p></p>
+Development container configuration
+dev:
+  # Container image
+  image: node:16
+<p></p>
+  # Port forwarding
+  ports:
+    - port: 3000:3000  # For the application
+    - port: 9229:9229  # For debugging
+<p></p>
+  # File synchronization
+  sync:
+    - src: ./src
+      dest: /app/src
+    - src: ./package.json
+      dest: /app/package.json
+    - src: ./tsconfig.json
+      dest: /app/tsconfig.json
+<p></p>
+  # Commands to run in the container
+  command:
+    - npm
+    - run
+    - dev
+<p></p>
+  # Environment variables
+  env:
+    - name: NODE_ENV
+      value: development
+    - name: DEBUG
+      value: "true"
+</code></pre>
+<p></p>
+<h3>Python Application</h3>
+<p></p>
+<pre><code class="language-yaml">
+Kledspace configuration for a Python application
+version: v1
+name: python-app
+<p></p>
+Development container configuration
+dev:
+  # Container image
+  image: python:3.9
+<p></p>
+  # Port forwarding
+  ports:
+    - port: 8000:8000  # For the application
+    - port: 5678:5678  # For debugging
+<p></p>
+  # File synchronization
+  sync:
+    - src: ./src
+      dest: /app/src
+    - src: ./requirements.txt
+      dest: /app/requirements.txt
+    - src: ./setup.py
+      dest: /app/setup.py
+<p></p>
+  # Commands to run in the container
+  command:
+    - python
+    - -m
+    - uvicorn
+    - src.main:app
+    - --reload
+    - --host
+    - 0.0.0.0
+    - --port
+    - "8000"
+<p></p>
+  # Environment variables
+  env:
+    - name: PYTHONPATH
+      value: /app
+    - name: DEBUG
+      value: "true"
+</code></pre>
+<p></p>
+<h3>Ruby Application</h3>
+<p></p>
+<pre><code class="language-yaml">
+Kledspace configuration for a Ruby application
+version: v1
+name: ruby-app
+<p></p>
+Development container configuration
+dev:
+  # Container image
+  image: ruby:3.0
+<p></p>
+  # Port forwarding
+  ports:
+    - port: 3000:3000  # For the application
+    - port: 1234:1234  # For debugging
+<p></p>
+  # File synchronization
+  sync:
+    - src: ./app
+      dest: /app/app
+    - src: ./config
+      dest: /app/config
+    - src: ./Gemfile
+      dest: /app/Gemfile
+    - src: ./Gemfile.lock
+      dest: /app/Gemfile.lock
+<p></p>
+  # Commands to run in the container
+  command:
+    - bundle
+    - exec
+    - rails
+    - server
+    - -b
+    - 0.0.0.0
+<p></p>
+  # Environment variables
+  env:
+    - name: RAILS_ENV
+      value: development
+    - name: DEBUG
+      value: "true"
+</code></pre>
+<p></p>
+<h2>Benefits</h2>
+<p></p>
+<h3>Consistent Development Environment</h3>
+<p></p>
+Kledspace provides a consistent development environment across different machines and platforms, ensuring that applications behave the same way in development and production. This consistency reduces the likelihood of "works on my machine" issues and simplifies the deployment process.
+<p></p>
+Key benefits:
+<ul>
+<li>**Reduced Environment Discrepancies**: By using the same container image for development and production, Kledspace ensures that the application runs in the same environment throughout the development lifecycle.</li>
+<ul>
+<li>**Simplified Onboarding**: New team members can quickly set up a development environment that matches the rest of the team, reducing onboarding time and complexity.</li>
+<ul>
+<li>**Improved Collaboration**: Team members can share development environments and collaborate on projects, knowing that they are working in the same environment.</li>
+<ul>
+<li>**Streamlined CI/CD**: The consistency between development and production environments simplifies continuous integration and continuous deployment, reducing the likelihood of deployment issues.</li>
+<p></p>
+<h3>Efficient Development Workflow</h3>
+<p></p>
+Kledspace provides an efficient development workflow for Kubernetes applications, enabling developers to iterate quickly and efficiently. This efficiency reduces the time and effort required to develop and test applications, increasing developer productivity.
+<p></p>
+Key benefits:
+<ul>
+<li>**Fast Iteration**: With features like file synchronization and hot reloading, Kledspace enables developers to see the changes they make to the code reflected in the running application almost instantly.</li>
+<ul>
+<li>**Simplified Debugging**: Kledspace's debugging capabilities enable developers to identify and fix issues quickly and efficiently, reducing the time spent on debugging.</li>
+<ul>
+<li>**Streamlined Deployment**: Kledspace's integration with Kled Clusters simplifies the deployment process, enabling developers to deploy applications to production with confidence.</li>
+<ul>
+<li>**Reduced Context Switching**: By providing a comprehensive development environment, Kledspace reduces the need for developers to switch between different tools and environments, increasing focus and productivity.</li>
+<p></p>
+<h3>Enhanced Collaboration</h3>
+<p></p>
+Kledspace enhances collaboration among team members, enabling them to work together on projects more effectively. This collaboration improves the quality of the code and reduces the time required to develop and deploy applications.
+<p></p>
+Key benefits:
+<ul>
+<li>**Shared Development Environments**: Team members can share development environments, ensuring that everyone is working in the same environment and reducing the likelihood of environment-related issues.</li>
+<ul>
+<li>**Consistent Tooling**: Kledspace ensures that all team members use the same tools and workflows, reducing confusion and improving collaboration.</li>
+<ul>
+<li>**Simplified Knowledge Sharing**: With a consistent development environment, it's easier for team members to share knowledge and help each other, improving the overall team productivity.</li>
+<ul>
+<li>**Improved Code Quality**: By enabling team members to collaborate more effectively, Kledspace helps improve the quality of the code, reducing the likelihood of bugs and issues.</li>
+<p></p>
+<h2>Conclusion</h2>
+<p></p>
+Kledspace is a powerful development environment for Kubernetes, enabling developers to build, test, and debug applications directly in Kubernetes. By providing a seamless development experience for Kubernetes applications, Kledspace makes it easy to develop and deploy applications to Kubernetes clusters, improving developer productivity and code quality.
+<p></p>
+With features like development containers, file synchronization, port forwarding, hot reloading, and debugging, Kledspace provides a comprehensive solution for Kubernetes development. Its integration with Kled Clusters ensures that developers can leverage the security and efficiency of Kled Clusters while still benefiting from the powerful development capabilities of Kledspace.
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Kled.io. All rights reserved.</p>
+    </footer>
+</body>
+</html>

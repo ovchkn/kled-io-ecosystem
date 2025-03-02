@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gateway System - Kled.io Ecosystem Documentation</title>
+    <link rel="stylesheet" href="/css/custom.css">
+    <style>
+        :root {
+            --primary-color: #0066cc;
+            --secondary-color: #4CAF50;
+            --accent-color: #FF5722;
+            --text-color: #333;
+            --light-bg: #f8f9fa;
+            --border-color: #ddd;
+            --sidebar-width: 280px;
+            --header-height: 60px;
+            --content-max-width: 1200px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0 20px;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .main-container {
+            display: flex;
+            margin-top: var(--header-height);
+            flex: 1;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--light-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            position: fixed;
+            top: var(--header-height);
+            bottom: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: var(--text-color);
+            display: block;
+            padding: 5px 0;
+            transition: color 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: var(--primary-color);
+        }
+
+        .content {
+            flex: 1;
+            padding: 30px;
+            margin-left: var(--sidebar-width);
+            max-width: calc(var(--content-max-width) - var(--sidebar-width));
+        }
+
+        .content h1 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .content p {
+            margin-bottom: 15px;
+        }
+
+        .content ul, .content ol {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+
+        .content a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .content a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: var(--light-bg);
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .content {
+                margin-left: 0;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kled.io Ecosystem Documentation</h1>
+    </header>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <h2>Documentation</h2>
+            <ul>
+                <li><a href="/docs/overview/index.html">Overview</a></li>
+                <li>
+                    <h3>Architecture</h3>
+                    <ul>
+                        <li><a href="/docs/architecture/index.html">Architecture Overview</a></li>
+                        <li><a href="/docs/architecture/workspace-technology.html">Workspace Technology</a></li>
+                        <li><a href="/docs/architecture/kled-cluster.html">Kled Cluster</a></li>
+                        <li><a href="/docs/architecture/pure-rust-communication.html">Pure Rust Communication</a></li>
+                        <li><a href="/docs/architecture/flutter-ui.html">Flutter UI</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <h3>Technical Components</h3>
+                    <ul>
+                        <li><a href="/docs/technical-components/index.html">Components Overview</a></li>
+                        <li><a href="/docs/technical-components/cli.html">CLI</a></li>
+                        <li><a href="/docs/technical-components/gateway.html">Gateway</a></li>
+                        <li><a href="/docs/technical-components/kledspace.html">Kledspace</a></li>
+                        <li><a href="/docs/technical-components/kpolicy.html">kPolicy</a></li>
+                        <li><a href="/docs/technical-components/kled-cluster-integration.html">Kled Cluster Integration</a></li>
+                        <li><a href="/docs/technical-components/virtual-cluster-integration.html">Virtual Cluster Integration</a></li>
+                        <li><a href="/docs/technical-components/rust-flutter-bridge.html">Rust-Flutter Bridge</a></li>
+                    </ul>
+                </li>
+                <li><a href="/docs/enterprise-ai-ml/index.html">Enterprise AI/ML</a></li>
+                <li><a href="/docs/roadmap/index.html">Roadmap</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+<p></p>
+<h2>Overview</h2>
+<p></p>
+The Gateway System is a key component of the Kled.io Ecosystem, providing a centralized point for managing communication between different parts of the system. Built on Aclix Web Servers and leveraging the pure Rust communication layer, the Gateway System enables seamless integration between the frontend and backend components.
+<p></p>
+<h2>Architecture</h2>
+<p></p>
+<pre><code class="language-mermaid">
+graph TD
+    A[Client Applications] --> B[Gateway System]
+    B --> C[Backend Services]
+    B --> D[Virtual Clusters]
+    B --> E[Workspace Manager]
+<p></p>
+    subgraph "Frontend"
+    A
+    end
+<p></p>
+    subgraph "Communication Layer"
+    B
+    end
+<p></p>
+    subgraph "Backend Services"
+    C
+    D
+    E
+    end
+</code></pre>
+<p></p>
+The Gateway System sits at the heart of the Kled.io Ecosystem, providing a unified interface for client applications to interact with backend services. This architecture enables seamless communication between different parts of the system while ensuring optimal performance and security.
+<p></p>
+<h2>Key Components</h2>
+<p></p>
+<h3>HTTP Server</h3>
+<p></p>
+The HTTP Server provides a RESTful API for client applications to interact with the Kled.io Ecosystem:
+<p></p>
+</code></pre>rust
+// Create the router
+let app = Router::new()
+    .route("/", get(|| async { "Kled.io Gateway" }))
+    .route("/health", get(|| async { "OK" }))
+    .route("/api/v1/workspaces", get(list_workspaces))
+    .route("/api/v1/workspaces/:id", get(get_workspace))
+    .route("/api/v1/workspaces", post(create_workspace))
+    .route("/api/v1/workspaces/:id", delete(delete_workspace))
+    .route("/api/v1/clusters", get(list_clusters))
+    .route("/api/v1/clusters/:id", get(get_cluster))
+    .route("/api/v1/clusters", post(create_cluster))
+    .route("/api/v1/clusters/:id", delete(delete_cluster));
+<p></p>
+// Start the HTTP server
+let http_addr = "127.0.0.1:3000".parse()?;
+let http_server = axum::Server::bind(&http_addr)
+    .serve(app.clone().into_make_service());
+</code></pre>
+<p></p>
+<h3>Unix Domain Socket</h3>
+<p></p>
+The Unix Domain Socket provides a high-performance communication channel for local services to interact with the Kled.io Ecosystem:
+<p></p>
+</code></pre>rust
+// Create a Unix Domain Socket
+let uds = UnixDomainSocket::new("/path/to/socket");
+<p></p>
+// Bind the socket
+let listener = uds.bind().await?;
+<p></p>
+// Accept connections
+let uds_server = UnixDomainSocket::accept_loop(listener);
+</code></pre>
+<p></p>
+<h3>Gateway Configuration</h3>
+<p></p>
+The Gateway Configuration provides a flexible way to configure the Gateway System:
+<p></p>
+</code></pre>rust
+/// Gateway configuration
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct GatewayConfig {
+    /// HTTP server address
+    pub http_addr: SocketAddr,
+    /// Unix domain socket path
+    pub uds_path: Option<String>,
+    /// Observability configuration
+    pub observability: KledObservabilityConfig,
+}
+<p></p>
+impl Default for GatewayConfig {
+    fn default() -> Self {
+        Self {
+            http_addr: "127.0.0.1:3000".parse().unwrap(),
+            uds_path: None,
+            observability: KledObservabilityConfig::default(),
+        }
+    }
+}
+</code></pre>
+<p></p>
+<h2>Implementation Details</h2>
+<p></p>
+<h3>Gateway Server</h3>
+<p></p>
+The Gateway Server is the main component of the Gateway System, responsible for managing communication between different parts of the system:
+<p></p>
+</code></pre>rust
+/// Gateway server
+pub struct Gateway {
+    /// Gateway configuration
+    config: GatewayConfig,
+}
+<p></p>
+impl Gateway {
+    /// Create a new gateway server
+    pub fn new(config: GatewayConfig) -> Self {
+        Self { config }
+    }
+<p></p>
+    /// Initialize the gateway
+    pub async fn init(&self) -> Result<()> {
+        // Initialize observability
+        init_observability(self.config.observability.clone())
+            .context("Failed to initialize observability")?;
+<p></p>
+        info!("Initializing Kled.io gateway");
+<p></p>
+        Ok(())
+    }
+<p></p>
+    /// Run the gateway server
+    pub async fn run(&self) -> Result<()> {
+        // Create the router
+        let app = Router::new()
+            .route("/", get(|| async { "Kled.io Gateway" }))
+            .route("/health", get(|| async { "OK" }));
+<p></p>
+        // Start the HTTP server
+        let http_addr = self.config.http_addr;
+        info!("Starting HTTP server on {}", http_addr);
+<p></p>
+        let http_server = axum::Server::bind(&http_addr)
+            .serve(app.clone().into_make_service());
+<p></p>
+        // Start the Unix domain socket server if configured
+        let uds_server = if let Some(uds_path) = &self.config.uds_path {
+            info!("Starting Unix domain socket server on {}", uds_path);
+<p></p>
+            let uds = UnixDomainSocket::new(uds_path);
+            let listener = uds.bind().await
+                .context("Failed to bind Unix domain socket")?;
+<p></p>
+            let uds_server = UnixDomainSocket::accept_loop(listener);
+            Some(uds_server)
+        } else {
+            None
+        };
+<p></p>
+        // Run the servers
+        if let Some(uds_server) = uds_server {
+            tokio::select! {
+                result = http_server => {
+                    result.context("HTTP server error")?;
+                }
+                _ = uds_server => {
+                    error!("Unix domain socket server exited unexpectedly");
+                }
+            }
+        } else {
+            http_server.await.context("HTTP server error")?;
+        }
+<p></p>
+        Ok(())
+    }
+}
+</code></pre>
+<p></p>
+<h3>API Handlers</h3>
+<p></p>
+The API Handlers process requests from client applications and interact with backend services:
+<p></p>
+</code></pre>rust
+/// List workspaces
+async fn list_workspaces() -> Result<Json<Vec<Workspace>>, StatusCode> {
+    // Get workspaces from the database
+    let workspaces = Workspace::list()
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+<p></p>
+    // Return the workspaces
+    Ok(Json(workspaces))
+}
+<p></p>
+/// Get a workspace
+async fn get_workspace(Path(id): Path<String>) -> Result<Json<Workspace>, StatusCode> {
+    // Get the workspace from the database
+    let workspace = Workspace::get(&id)
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?
+        .ok_or(StatusCode::NOT_FOUND)?;
+<p></p>
+    // Return the workspace
+    Ok(Json(workspace))
+}
+<p></p>
+/// Create a workspace
+async fn create_workspace(
+    Json(payload): Json<CreateWorkspaceRequest>,
+) -> Result<Json<Workspace>, StatusCode> {
+    // Create the workspace
+    let workspace = Workspace::create(payload.name, payload.repo, payload.cluster)
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+<p></p>
+    // Return the workspace
+    Ok(Json(workspace))
+}
+<p></p>
+/// Delete a workspace
+async fn delete_workspace(Path(id): Path<String>) -> Result<StatusCode, StatusCode> {
+    // Delete the workspace
+    Workspace::delete(&id)
+        .await
+        .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+<p></p>
+    // Return success
+    Ok(StatusCode::NO_CONTENT)
+}
+</code></pre>
+<p></p>
+<h3>Middleware</h3>
+<p></p>
+The Middleware provides additional functionality for the Gateway System, such as authentication, logging, and error handling:
+<p></p>
+</code></pre>rust
+/// Authentication middleware
+async fn authenticate<B>(
+    TypedHeader(auth): TypedHeader<Authorization<Bearer>>,
+    request: Request<B>,
+    next: Next<B>,
+) -> Result<Response, StatusCode> {
+    // Validate the token
+    let token = auth.token();
+    if !is_valid_token(token) {
+        return Err(StatusCode::UNAUTHORIZED);
+    }
+<p></p>
+    // Continue with the request
+    Ok(next.run(request).await)
+}
+<p></p>
+/// Logging middleware
+async fn log<B>(request: Request<B>, next: Next<B>) -> Response {
+    // Log the request
+    info!("Request: {} {}", request.method(), request.uri());
+<p></p>
+    // Continue with the request
+    let response = next.run(request).await;
+<p></p>
+    // Log the response
+    info!("Response: {}", response.status());
+<p></p>
+    response
+}
+<p></p>
+/// Error handling middleware
+async fn handle_error<B>(
+    request: Request<B>,
+    next: Next<B>,
+) -> Result<Response, StatusCode> {
+    // Continue with the request
+    let response = next.run(request).await;
+<p></p>
+    // Check if the response is an error
+    if response.status().is_client_error() || response.status().is_server_error() {
+        error!("Error: {}", response.status());
+    }
+<p></p>
+    Ok(response)
+}
+</code></pre>
+<p></p>
+<h2>Benefits</h2>
+<p></p>
+<h3>Performance</h3>
+<p></p>
+The Gateway System provides exceptional performance, with low latency and high throughput:
+<p></p>
+<ul>
+<li>**Unix Domain Sockets**: The Gateway System uses Unix Domain Sockets for local communication, providing higher performance than traditional network sockets.</li>
+<ul>
+<li>**Rust Implementation**: The Gateway System is implemented in Rust, providing memory safety and high performance.</li>
+<ul>
+<li>**Asynchronous Processing**: The Gateway System uses asynchronous processing to handle multiple requests concurrently.</li>
+<p></p>
+<h3>Security</h3>
+<p></p>
+The Gateway System provides strong security features to protect the Kled.io Ecosystem:
+<p></p>
+<ul>
+<li>**Authentication**: The Gateway System authenticates requests to ensure that only authorized users can access the system.</li>
+<ul>
+<li>**Authorization**: The Gateway System authorizes requests to ensure that users can only access resources they are permitted to access.</li>
+<ul>
+<li>**Encryption**: The Gateway System encrypts data in transit to protect sensitive information.</li>
+<p></p>
+<h3>Scalability</h3>
+<p></p>
+The Gateway System is designed to scale with the Kled.io Ecosystem:
+<p></p>
+<ul>
+<li>**Horizontal Scaling**: The Gateway System can be scaled horizontally by adding more instances.</li>
+<ul>
+<li>**Load Balancing**: The Gateway System can distribute requests across multiple instances to balance the load.</li>
+<ul>
+<li>**Resource Efficiency**: The Gateway System uses resources efficiently to maximize throughput.</li>
+<p></p>
+<h2>Integration with Other Components</h2>
+<p></p>
+<h3>Frontend Integration</h3>
+<p></p>
+The Gateway System integrates with the frontend components through the HTTP API:
+<p></p>
+</code></pre>typescript
+// Create a workspace
+async function createWorkspace(name: string, repo: string, cluster: string): Promise<Workspace> {
+    const response = await fetch('/api/v1/workspaces', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+            name,
+            repo,
+            cluster,
+        }),
+    });
+<p></p>
+    if (!response.ok) {
+        throw new Error(`Failed to create workspace: ${response.statusText}`);
+    }
+<p></p>
+    return response.json();
+}
+<p></p>
+// List workspaces
+async function listWorkspaces(): Promise<Workspace[]> {
+    const response = await fetch('/api/v1/workspaces', {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+    });
+<p></p>
+    if (!response.ok) {
+        throw new Error(`Failed to list workspaces: ${response.statusText}`);
+    }
+<p></p>
+    return response.json();
+}
+</code></pre>
+<p></p>
+<h3>Backend Integration</h3>
+<p></p>
+The Gateway System integrates with the backend components through the Rust API:
+<p></p>
+</code></pre>rust
+// Create a workspace
+pub async fn create_workspace(name: String, repo: String, cluster: String) -> Result<Workspace> {
+    // Create the workspace in the database
+    let workspace = Workspace::create(name, repo, cluster).await?;
+<p></p>
+    // Create the workspace in the virtual cluster
+    let cluster = VirtualCluster::get(&cluster).await?;
+    cluster.create_workspace(&workspace).await?;
+<p></p>
+    // Return the workspace
+    Ok(workspace)
+}
+<p></p>
+// List workspaces
+pub async fn list_workspaces() -> Result<Vec<Workspace>> {
+    // Get workspaces from the database
+    let workspaces = Workspace::list().await?;
+<p></p>
+    // Return the workspaces
+    Ok(workspaces)
+}
+</code></pre>
+<p></p>
+<h2>Conclusion</h2>
+<p></p>
+The Gateway System is a fundamental component of the Kled.io Ecosystem, providing a centralized point for managing communication between different parts of the system. By leveraging Aclix Web Servers and the pure Rust communication layer, the Gateway System enables seamless integration between the frontend and backend components, ensuring optimal performance, security, and scalability.
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Kled.io. All rights reserved.</p>
+    </footer>
+</body>
+</html>
