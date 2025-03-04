@@ -86,7 +86,7 @@ Key features:
 The Kled.io Ecosystem features an advanced workspace technology that provides a comprehensive environment for development and deployment. This technology is built on DevPod and Daytona, with a proprietary preload for loading Kled into workspaces, creating a powerful and flexible development environment.
 
 Key features:
-- DevPod + Daytona integration for powerful workspace management
+- Proprietary workspace creation to copy repo's and open in IDE
 - Proprietary preload with full language support and Docker/Kubernetes tools
 - Multiple workspace providers (local, Kubernetes, cloud)
 - Monorepo support with project discovery and dependency management
