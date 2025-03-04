@@ -105,14 +105,15 @@ var config = {
     ],
   ],
 
-  // Plugins
+  // Plugins - removed duplicate plugins that are already in preset-classic
   plugins: [
-    '@docusaurus/plugin-content-pages',
+    // Removed '@docusaurus/plugin-content-pages' - already included in preset-classic
     '@docusaurus/plugin-sitemap',
   ],
 
   // Themes
   themes: [
+    // This is also redundant with preset-classic, but keeping for now in case of specific overrides
     ['@docusaurus/theme-classic', {
       customCss: require.resolve('./src/css/custom.css'),
     }]
