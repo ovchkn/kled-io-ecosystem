@@ -3,14 +3,9 @@
  - create an ordered group of docs
  - render a sidebar for each doc of that group
  - provide next/previous navigation
-
- The sidebars can be generated from the filesystem, or explicitly defined here.
-
- Create as many sidebars as you want.
  */
 
-module.exports = {
-  // By default, Docusaurus generates a sidebar from the docs folder structure
+const sidebars = {
   docs: [
     {
       type: 'category',
@@ -22,8 +17,8 @@ module.exports = {
       label: 'Architecture',
       items: [
         'architecture/index',
-        'architecture/workspace-technology',
         'architecture/kled-cluster',
+        'architecture/workspace-technology',
         'architecture/pure-rust-communication',
         'architecture/flutter-ui',
       ],
@@ -33,13 +28,14 @@ module.exports = {
       label: 'Technical Components',
       items: [
         'technical-components/index',
-        'technical-components/cli',
         'technical-components/gateway',
         'technical-components/kledspace',
-        'technical-components/kpolicy',
         'technical-components/kled-cluster-integration',
-        'technical-components/virtual-cluster-integration',
+        'technical-components/kpolicy',
+        'technical-components/cli',
         'technical-components/rust-flutter-bridge',
+        // Removing the non-existent file
+        // 'technical-components/virtual-cluster-integration',
       ],
     },
     {
@@ -54,3 +50,5 @@ module.exports = {
     },
   ],
 };
+
+module.exports = sidebars;
