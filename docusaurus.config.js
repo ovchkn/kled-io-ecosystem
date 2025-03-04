@@ -121,8 +121,7 @@ var config = {
   themes: [
     ['@docusaurus/theme-classic', {
       customCss: require.resolve('./src/css/custom.css'),
-    }],
-    '@docusaurus/theme-search-algolia',
+    }]
   ],
 };
 

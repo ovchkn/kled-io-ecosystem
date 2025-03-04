@@ -1,4 +1,4 @@
-#!/bin/bash
+rn#!/bin/bash
 
 # Script to generate a static HTML site from markdown files
 
