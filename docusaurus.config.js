@@ -96,6 +96,7 @@ var config = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           routeBasePath: '/',
+          editUrl: 'https://github.com/kled-io/kled-ecosystem-docs/edit/main/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -106,13 +107,6 @@ var config = {
 
   // Plugins
   plugins: [
-    [
-      '@docusaurus/plugin-content-docs',
-      {
-        sidebarPath: require.resolve('./sidebars.js'),
-        editUrl: 'https://github.com/kled-io/kled-ecosystem-docs/edit/main/',
-      }
-    ],
     '@docusaurus/plugin-content-pages',
     '@docusaurus/plugin-sitemap',
   ],
